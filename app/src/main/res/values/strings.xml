@@ -2,4 +2,8 @@
     <string name="app_name">AsistCompras</string>
     <string name="facebook_app_id">1742974732640211</string>
     <string name="title_activity_maps">Map</string>
+    <string name="nombre">Nombre</string>
+    <string name="descripcion">Descripción</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="aceptar">Aceptar</string>
 </resources>

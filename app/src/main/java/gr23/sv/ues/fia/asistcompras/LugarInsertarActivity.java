@@ -14,6 +14,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import gr23.sv.ues.fia.asistcompras.Entidades.Lugar;
+import gr23.sv.ues.fia.asistcompras.Modelos.ControlDB;
+
 public class LugarInsertarActivity extends Activity {
 
     private TextInputLayout nombre;
@@ -21,6 +24,7 @@ public class LugarInsertarActivity extends Activity {
     public LocationManager locationManager;
     private double latitud;
     private double longitud;
+    private ControlDB helper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +34,7 @@ public class LugarInsertarActivity extends Activity {
         nombre = (TextInputLayout) findViewById(R.id.til_nombre);
         descripcion = (TextInputLayout) findViewById(R.id.til_descripcion);
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        helper = new ControlDB(this);
 
         Button botonAcepar = (Button) findViewById(R.id.btnAceptar);
         botonAcepar.setOnClickListener(new View.OnClickListener() {
@@ -41,6 +46,15 @@ public class LugarInsertarActivity extends Activity {
     }
 
     private void ingresar() {
+        String regInsertados;
+        String nombreLugar = nombre.getEditText().getText().toString();
+        String descripcionLugar = descripcion.getEditText().getText().toString();
+
+        Lugar lugar = new Lugar(latitud, longitud, nombreLugar, descripcionLugar, "nada");
+        helper.abrir();
+        regInsertados = helper.insertar(lugar);
+        helper.cerrar();
+
         Toast.makeText(this, latitud + " " + longitud, Toast.LENGTH_SHORT).show();
     }
 

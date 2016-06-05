@@ -1,4 +1,4 @@
-package gr23.sv.ues.fia.asistcompras.Model;
+package gr23.sv.ues.fia.asistcompras.Entidades;
 
 /**
  * Created by FAMILY on 04/06/2016.

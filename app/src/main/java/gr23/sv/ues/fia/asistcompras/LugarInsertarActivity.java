@@ -55,7 +55,7 @@ public class LugarInsertarActivity extends Activity {
         regInsertados = helper.insertar(lugar);
         helper.cerrar();
 
-        Toast.makeText(this, latitud + " " + longitud, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, regInsertados, Toast.LENGTH_SHORT).show();
     }
 
     LocationListener locationListener = new LocationListener() {

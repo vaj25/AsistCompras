@@ -60,4 +60,13 @@ public class Lugar {
     public void setImage(String image) {
         this.image = image;
     }
+
+    @Override
+    public String toString() {
+        return "Lugar{" +
+                "nombre='" + nombre + '\'' +
+                ", Descripcion='" + Descripcion + '\'' +
+                ", image='" + image + '\'' +
+                '}';
+    }
 }

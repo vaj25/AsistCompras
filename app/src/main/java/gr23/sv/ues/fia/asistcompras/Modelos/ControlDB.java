@@ -1,9 +1,15 @@
 package gr23.sv.ues.fia.asistcompras.Modelos;
 
+import android.app.ListActivity;
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import gr23.sv.ues.fia.asistcompras.Entidades.Lugar;
 
 /**
@@ -11,6 +17,9 @@ import gr23.sv.ues.fia.asistcompras.Entidades.Lugar;
  */
 
 public class ControlDB {
+
+    private final String[] camposLugar = {"latitud", "longitud", "nombre", "descripcion", "imagen"};
+
     private final Context context;
     private DatabaseHelper DBHelper;
     private SQLiteDatabase db;
@@ -51,6 +60,24 @@ public class ControlDB {
             regInsertados = regInsertados+contador;
         }
         return regInsertados;
+    }
+
+    /*
+    * consultar lugar
+    */
+    public List consultarAllLugar(){
+        abrir();
+        List<Lugar> lista= new ArrayList<>();
+        Cursor cur = db.rawQuery("select * from lugar",null );
+        while(cur.moveToNext()){
+            Lugar lugar = new Lugar();
+            lugar.setNombre(cur.getString(2));
+            lugar.setDescripcion(cur.getString(3));
+            lista.add(lugar);
+        }
+        cur.close();
+        db.close();
+        return lista;
     }
 
     public boolean verificarIntegridad(Object dato, int relacion) throws SQLException {

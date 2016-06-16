@@ -28,8 +28,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "constraint PK_LUGAR primary key (latitud, longitud));");
             db.execSQL("CREATE TABLE articulo (" +
                     "idarticulo INTEGER NOT NULL," +
-                    "descripcionArticulo varchar(100)," +
-                    "nombreArticulo CHAR(50)," +
+                    "descripcionarticulo varchar(100)," +
+                    "nombrearticulo CHAR(50)," +
                     "constraint PK_ARTICULO primary key (idarticulo));");
             db.execSQL("CREATE TABLE oferta (" +
                     "idoferta INTEGER NOT NULL," +
@@ -38,13 +38,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "constraint PK_OFERTA primary key (idoferta));");
             db.execSQL("CREATE TABLE lista (" +
                     "idlista INTEGER NOT NULL," +
-                    "nombreLista VARCHAR(25)," +
+                    "nombrelista VARCHAR(25)," +
                     "descripcionlista VARCHAR(100)," +
                     "constraint PK_LISTA primary key (idlista));");
             db.execSQL("CREATE TABLE unidadmedida (" +
                     "idunidadmedida INTEGER NOT NULL," +
                     "nombreum VARCHAR(25)," +
-                    "descripcion VARCHAR(100)," +
+                    "descripcionum VARCHAR(100)," +
                     "constraint PK_UM primary key (idunidadmedida);");
             db.execSQL("CREATE TABLE detallearticulo (" +
                     "iddetallearticulo INTEGER NOT NULL," +
@@ -56,7 +56,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "idoferta INTEGER NOT NULL," +
                     "idlista INTEGER NOT NULL," +
                     "idunidadmedida INTEGER NOT NULL," +
-                    "constraint PK_UM primary key (iddetallearticulo);");
+                    "constraint PK_DETART primary key (iddetallearticulo);");
         } catch (SQLException e) {
             e.printStackTrace();
         }

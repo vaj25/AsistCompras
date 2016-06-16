@@ -10,7 +10,12 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
+import gr23.sv.ues.fia.asistcompras.Entidades.Articulo;
+import gr23.sv.ues.fia.asistcompras.Entidades.DetalleArticulo;
+import gr23.sv.ues.fia.asistcompras.Entidades.Lista;
 import gr23.sv.ues.fia.asistcompras.Entidades.Lugar;
+import gr23.sv.ues.fia.asistcompras.Entidades.Oferta;
+import gr23.sv.ues.fia.asistcompras.Entidades.UnidadMedida;
 
 /**
  * Created by FAMILY on 05/06/2016.
@@ -79,6 +84,132 @@ public class ControlDB {
         db.close();
         return lista;
     }
+
+    public String insertar(Articulo articulo){
+        String regInsertados="Registro Insertado Nº= ";
+        long contador = 0;
+        ContentValues lgr = new ContentValues();
+        lgr.put("idarticulo", articulo.getIdArticulo());
+        lgr.put("descripcionarticulo", articulo.getDescripcionArticulo());
+        lgr.put("nombrearticulo", articulo.getNombreArticulo());
+        contador = db.insert("articulo", null, lgr);
+        if(contador == -1 || contador == 0)
+        {
+            regInsertados = "Error al Insertar el registro, Registro Duplicado. Verificar inserción";
+        }
+        else {
+            regInsertados = regInsertados+contador;
+        }
+        return regInsertados;
+    }
+   /* public List consultarAllArticulo(){
+        abrir();
+        List<Articulo> lista= new ArrayList<>();
+        Cursor cur = db.rawQuery("select * from articulo",null );
+        while(cur.moveToNext()){
+            Articulo articulo = new Articulo();
+            articulo.setNombreArticulo(cur.getString(1));
+            articulo.setDescripcionArticulo(cur.getString(2));
+            lista.add(articulo);
+        }
+        cur.close();
+        db.close();
+        return lista;
+    }*/
+    public String insertar(DetalleArticulo detart){
+        String regInsertados="Registro Insertado Nº= ";
+        long contador = 0;
+        ContentValues lgr = new ContentValues();
+        lgr.put("iddetallearticulo", detart.getIdDetalleArticulo());
+        lgr.put("cantidad", detart.getCantidad());
+        lgr.put("precio", detart.getPrecio());
+        lgr.put("idoferta", detart.getIdOferta());
+        lgr.put("idarticulo", detart.getIdArticulo());
+        lgr.put("idlista", detart.getIdLista());
+        lgr.put("idunidadmedida", detart.getIdUnidadMedida());
+        lgr.put("latitud", detart.getLatitud());
+        lgr.put("longitud", detart.getLongitud());
+        contador = db.insert("detallearticulo", null, lgr);
+        if(contador == -1 || contador == 0)
+        {
+            regInsertados = "Error al Insertar el registro, Registro Duplicado. Verificar inserción";
+        }
+        else {
+            regInsertados = regInsertados+contador;
+        }
+        return regInsertados;
+    }
+    public String insertar(Oferta oferta){
+        String regInsertados="Registro Insertado Nº= ";
+        long contador = 0;
+        ContentValues lgr = new ContentValues();
+        lgr.put("idoferta", oferta.getIdOferta());
+        lgr.put("foto", oferta.isFoto());
+        lgr.put("video", oferta.isVideo());
+        contador = db.insert("oferta", null, lgr);
+        if(contador == -1 || contador == 0)
+        {
+            regInsertados = "Error al Insertar el registro, Registro Duplicado. Verificar inserción";
+        }
+        else {
+            regInsertados = regInsertados+contador;
+        }
+        return regInsertados;
+    }
+    public String insertar(Lista lista){
+        String regInsertados="Registro Insertado Nº= ";
+        long contador = 0;
+        ContentValues lgr = new ContentValues();
+        lgr.put("idlista", lista.getIdLista());
+        lgr.put("nombrelista", lista.getNombreLista());
+        lgr.put("descripcionlista", lista.getDescripcionLista());
+        contador = db.insert("lista", null, lgr);
+        if(contador == -1 || contador == 0)
+        {
+            regInsertados = "Error al Insertar el registro, Registro Duplicado. Verificar inserción";
+        }
+        else {
+            regInsertados = regInsertados+contador;
+        }
+        return regInsertados;
+    }
+    public String insertar(UnidadMedida um){
+        String regInsertados="Registro Insertado Nº= ";
+        long contador = 0;
+        ContentValues lgr = new ContentValues();
+        lgr.put("idunidadmedida", um.getIdUnidadMedida());
+        lgr.put("nombreum", um.getNombreUM());
+        lgr.put("descripcionum", um.getDescripcionUM());
+        contador = db.insert("unidadmedida", null, lgr);
+        if(contador == -1 || contador == 0)
+        {
+            regInsertados = "Error al Insertar el registro, Registro Duplicado. Verificar inserción";
+        }
+        else {
+            regInsertados = regInsertados+contador;
+        }
+        return regInsertados;
+    }
+    public List consultarAllDetalleArticulo(){
+        abrir();
+        List<ArrayList> lista= new ArrayList<>();
+        Cursor cur = db.rawQuery("select nombrearticulo,descripcionarticulo,foto,video,precio from detallearticulo as d inner join articulo a on d.idarticulo=a.detallearticulo inner join oferta o on d.idoferta=o.idoferta",null );
+        while(cur.moveToNext()){
+            ArrayList array = new ArrayList();
+            array.add(cur.getString(0));
+            array.add(cur.getString(1));
+            array.add(cur.getString(2));
+            array.add(cur.getString(3));
+            array.add(cur.getString(4));
+            lista.add(array);
+        }
+        cur.close();
+        db.close();
+        return lista;
+    }
+
+
+
 
     public boolean verificarIntegridad(Object dato, int relacion) throws SQLException {
 

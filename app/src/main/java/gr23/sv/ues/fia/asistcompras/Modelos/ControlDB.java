@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
+import gr23.sv.ues.fia.asistcompras.Entidades.Articulo;
 import gr23.sv.ues.fia.asistcompras.Entidades.Lugar;
 
 /**
@@ -79,6 +80,39 @@ public class ControlDB {
         db.close();
         return lista;
     }
+
+    public String insertar(Articulo articulo){
+        String regInsertados="Registro Insertado Nº= ";
+        long contador = 0;
+        ContentValues lgr = new ContentValues();
+        lgr.put("idarticulo", articulo.getIdArticulo());
+        lgr.put("descripcionarticulo", articulo.getDescripcionArticulo());
+        lgr.put("nombrearticulo", articulo.getNombreArticulo());
+        contador = db.insert("lugar", null, lgr);
+        if(contador == -1 || contador == 0)
+        {
+            regInsertados = "Error al Insertar el registro, Registro Duplicado. Verificar inserción";
+        }
+        else {
+            regInsertados = regInsertados+contador;
+        }
+        return regInsertados;
+    }
+    public List consultarAllArticulo(){
+        abrir();
+        List<Articulo> lista= new ArrayList<>();
+        Cursor cur = db.rawQuery("select * from articulo",null );
+        while(cur.moveToNext()){
+            Articulo articulo = new Articulo();
+            articulo.setNombreArticulo(cur.getString(1));
+            articulo.setDescripcionArticulo(cur.getString(2));
+            lista.add(articulo);
+        }
+        cur.close();
+        db.close();
+        return lista;
+    }
+
 
     public boolean verificarIntegridad(Object dato, int relacion) throws SQLException {
 

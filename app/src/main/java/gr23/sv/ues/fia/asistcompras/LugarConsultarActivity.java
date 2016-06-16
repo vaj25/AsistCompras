@@ -72,11 +72,11 @@ public class LugarConsultarActivity extends Activity {
                 helper.cerrar();
                 if (eliminadas>0){
                     Toast.makeText(this,"Se elimino " + eliminadas +" Lugar", Toast.LENGTH_SHORT).show();
+                    this.returnHome();
                 }
                 else{
                     Toast.makeText(this,"Error al eliminar", Toast.LENGTH_SHORT).show();
                 }
-                this.returnHome();
                 return true;
             default:
                 return super.onContextItemSelected(item);

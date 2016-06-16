@@ -12,6 +12,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String BASE_DATOS = "asistComprasv3.s3db";
     private static final int VERSION = 1;
+    private ControlDB helper;
     DatabaseHelper (Context context) {
         super(context,BASE_DATOS, null, VERSION);
     }

@@ -40,4 +40,9 @@ public class Articulo {
     public void setNombreArticulo(String nombreArticulo) {
         this.nombreArticulo = nombreArticulo;
     }
+
+    @Override
+    public String toString() {
+        return nombreArticulo;
+    }
 }

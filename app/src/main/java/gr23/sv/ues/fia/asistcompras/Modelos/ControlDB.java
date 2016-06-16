@@ -193,14 +193,11 @@ public class ControlDB {
     public List consultarAllDetalleArticulo(){
         abrir();
         List<ArrayList> lista= new ArrayList<>();
-        Cursor cur = db.rawQuery("select nombrearticulo,descripcionarticulo,foto,video,precio from detallearticulo as d inner join articulo as a on d.idarticulo=a.idarticulo inner join oferta as o on d.idoferta=o.idoferta",null );
+        Cursor cur = db.rawQuery("select iddetallearticulo,nombrearticulo,descripcionarticulo,foto,video,precio from detallearticulo as d inner join articulo as a on d.idarticulo=a.idarticulo inner join oferta as o on d.idoferta=o.idoferta",null );
         while(cur.moveToNext()){
             ArrayList array = new ArrayList();
             array.add(cur.getString(0));
             array.add(cur.getString(1));
-            array.add(cur.getString(2));
-            array.add(cur.getString(3));
-            array.add(cur.getString(4));
             lista.add(array);
         }
         cur.close();

@@ -1,6 +1,7 @@
 package gr23.sv.ues.fia.asistcompras;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
@@ -29,7 +30,7 @@ public class LugarConsultarActivity extends Activity {
         helper = new ControlDB(this);
         listView = (ListView) findViewById(R.id.listLugar);
         helper.abrir();
-        helper.llenarBD();
+        //helper.llenarBD();
         listLugar = helper.consultarAllLugar();
         helper.cerrar();
         ArrayAdapter adaptador = new ArrayAdapter(this, android.R.layout.simple_list_item_1, listLugar);
@@ -75,10 +76,15 @@ public class LugarConsultarActivity extends Activity {
                 else{
                     Toast.makeText(this,"Error al eliminar", Toast.LENGTH_SHORT).show();
                 }
+                this.returnHome();
                 return true;
             default:
                 return super.onContextItemSelected(item);
         }
+    }
+    public void returnHome() {
+        Intent home_intent = new Intent(getApplicationContext(),LugarConsultarActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(home_intent);
     }
 
 }

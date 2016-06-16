@@ -48,7 +48,9 @@
             android:value="@string/google_maps_key" />
 
         <activity android:name=".LugarInsertarActivity" />
-        <activity android:name=".LugarConsultarActivity"></activity>
+        <activity android:name=".LugarConsultarActivity" />
+        <activity android:name=".NuevaOfertaActivity" />
+        <activity android:name=".OfertaConsultarActivity"></activity>
     </application>
 
 </manifest>

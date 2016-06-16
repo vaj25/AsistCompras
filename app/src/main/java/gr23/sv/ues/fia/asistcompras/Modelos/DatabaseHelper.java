@@ -50,12 +50,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "iddetallearticulo INTEGER NOT NULL," +
                     "cantidad INTEGER," +
                     "precio FLOAT," +
-                    "latitud FLOAT NOT NULL," +
-                    "longitud FLOAT NOT NULL," +
+                    "latitud FLOAT NULL," +
+                    "longitud FLOAT NULL," +
                     "idarticulo INTEGER NOT NULL," +
                     "idoferta INTEGER NOT NULL," +
-                    "idlista INTEGER NOT NULL," +
-                    "idunidadmedida INTEGER NOT NULL," +
+                    "idlista INTEGER NULL," +
+                    "idunidadmedida INTEGER NULL," +
                     "constraint PK_DETART primary key (iddetallearticulo));");
         } catch (SQLException e) {
             e.printStackTrace();

@@ -76,8 +76,9 @@ public class ControlDB {
         Cursor cur = db.rawQuery("select * from lugar",null );
         while(cur.moveToNext()){
             Lugar lugar = new Lugar();
+            lugar.setLatitud(cur.getDouble(0));
+            lugar.setLongitud(cur.getDouble(1));
             lugar.setNombre(cur.getString(2));
-            lugar.setDescripcion(cur.getString(3));
             lista.add(lugar);
         }
         cur.close();
@@ -198,15 +199,69 @@ public class ControlDB {
             ArrayList array = new ArrayList();
             array.add(cur.getString(0));
             array.add(cur.getString(1));
+            array.add(cur.getString(2));
+            array.add(cur.getString(3));
+            array.add(cur.getString(4));
             lista.add(array);
         }
         cur.close();
         db.close();
         return lista;
     }
+    public int eliminar(Lugar lugar){
+        String[] id = {String.valueOf(lugar.getLatitud()), String.valueOf(lugar.getLongitud())};
+        ContentValues cv = new ContentValues();
+        cv.put("latitud", String.valueOf(0.0));
+        cv.put("longitud", String.valueOf(0.0));
+        int contador=0;
+        if (verificarIntegridad(lugar,1)) {
+            contador+=db.update("detallearticulo", cv, "latitud = ? AND longitud = ?", id);
+        }
+        String where="latitud='"+lugar.getLatitud()+"'";
+        where=where+" AND longitud='"+lugar.getLongitud()+"'";
+        contador+=db.delete("lugar", where, null);
+        return contador;
+    }
 
     public boolean verificarIntegridad(Object dato, int relacion) throws SQLException {
+        switch (relacion) {
+            case 1: {
+                //Verificar si existe Lugar en DetalleArticulo (Eliminar Lugar)
+                Lugar lugar = (Lugar) dato;
+                String[] id1 = {String.valueOf(lugar.getLatitud()), String.valueOf(lugar.getLongitud())};
+                abrir();
+                Cursor cursor1 = db.query("detallearticulo", null, "latitud = ? AND longitud = ?", id1, null, null, null);
+                if (cursor1.moveToFirst()) {
+                    //Se encontraron datos
+                    return true;
+                }
+                return false;
+            }
+            default:
+                return false;
+        }
+}
+    public String llenarBD(){
+        final double [] VLlatitud={6596.3,785451.3,4545.6,784.3};
+        final double[] VLlongitud={7845.6,4512.3,7889.2,452.3};
+        final String[] VLnombre={"SuperSelectos","DespensaFAM","Metrocentro","La Bendicion"};
+        final String[] VLdescripcion={"ofertas","rebajas","al dos por uno","grandes precios"};
+        final String[] VLimage={"true","false","true","false"};
 
-        return false;
+        abrir();
+        db.execSQL("DELETE FROM oferta");
+
+        Lugar lugar = new Lugar();
+        for(int i=0;i<4;i++){
+            lugar.setLatitud(VLlatitud[i]);
+            lugar.setLongitud(VLlongitud[i]);
+            lugar.setNombre(VLnombre[i]);
+            lugar.setDescripcion(VLdescripcion[i]);
+            lugar.setImage(VLimage[i]);
+            insertar(lugar);
+        }
+        cerrar();
+        return "Guardo Correctamente";
     }
 }
+

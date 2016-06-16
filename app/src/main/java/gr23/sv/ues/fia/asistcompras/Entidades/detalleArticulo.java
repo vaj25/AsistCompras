@@ -100,4 +100,9 @@ public class DetalleArticulo {
     public void setLongitud(double longitud) {
         this.longitud = longitud;
     }
+    @Override
+
+    public String toString() {
+        return String.valueOf(idDetalleArticulo)+"-";
+    }
 }

@@ -7,4 +7,6 @@
     <string name="cancelar">Cancelar</string>
     <string name="aceptar">Aceptar</string>
     <string name="btFoto">Tomar Foto</string>
+    <string name="menu_option_delete">Eliminar</string>
+    <string name="menu_option_compartir">Compartir</string>
 </resources>

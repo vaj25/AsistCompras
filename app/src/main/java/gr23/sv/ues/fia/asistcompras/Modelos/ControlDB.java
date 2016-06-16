@@ -1,15 +1,12 @@
 package gr23.sv.ues.fia.asistcompras.Modelos;
 
-import android.app.ListActivity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import gr23.sv.ues.fia.asistcompras.Entidades.Articulo;
 import gr23.sv.ues.fia.asistcompras.Entidades.DetalleArticulo;
 import gr23.sv.ues.fia.asistcompras.Entidades.Lista;
@@ -85,7 +82,6 @@ public class ControlDB {
         db.close();
         return lista;
     }
-
     public String insertar(Articulo articulo){
         String regInsertados="Registro Insertado Nº= ";
         long contador = 0;
@@ -103,20 +99,7 @@ public class ControlDB {
         }
         return regInsertados;
     }
-   /* public List consultarAllArticulo(){
-        abrir();
-        List<Articulo> lista= new ArrayList<>();
-        Cursor cur = db.rawQuery("select * from articulo",null );
-        while(cur.moveToNext()){
-            Articulo articulo = new Articulo();
-            articulo.setNombreArticulo(cur.getString(1));
-            articulo.setDescripcionArticulo(cur.getString(2));
-            lista.add(articulo);
-        }
-        cur.close();
-        db.close();
-        return lista;
-    }*/
+
     public String insertar(DetalleArticulo detart){
         String regInsertados="Registro Insertado Nº= ";
         long contador = 0;
@@ -246,7 +229,7 @@ public class ControlDB {
         final double[] VLlongitud={7845.6,4512.3,7889.2,452.3};
         final String[] VLnombre={"SuperSelectos","DespensaFAM","Metrocentro","La Bendicion"};
         final String[] VLdescripcion={"ofertas","rebajas","al dos por uno","grandes precios"};
-        final String[] VLimage={"true","false","true","false"};
+        final String[] VLimage={"prueba1.jpg","prueba2.jpg","prueba3.jpg","prueba4.jpg"};
 
         abrir();
         db.execSQL("DELETE FROM oferta");

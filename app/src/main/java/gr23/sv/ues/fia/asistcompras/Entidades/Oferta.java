@@ -5,13 +5,13 @@ package gr23.sv.ues.fia.asistcompras.Entidades;
  */
 public class Oferta {
     private int idOferta;
-    private boolean foto;
-    private boolean video;
+    private String foto;
+    private String video;
 
     public Oferta() {
     }
 
-    public Oferta(int idOferta, boolean foto, boolean video) {
+    public Oferta(int idOferta, String foto, String video) {
         this.idOferta = idOferta;
         this.foto = foto;
         this.video = video;
@@ -25,19 +25,19 @@ public class Oferta {
         this.idOferta = idOferta;
     }
 
-    public boolean isFoto() {
+    public String isFoto() {
         return foto;
     }
 
-    public void setFoto(boolean foto) {
+    public void setFoto(String foto) {
         this.foto = foto;
     }
 
-    public boolean isVideo() {
+    public String isVideo() {
         return video;
     }
 
-    public void setVideo(boolean video) {
+    public void setVideo(String video) {
         this.video = video;
     }
 }

@@ -35,6 +35,7 @@ public class LugarInsertarActivity extends Activity {
     Uri file;
     private double latitud;
     private double longitud;
+    private String fotoFile;
     private ControlDB helper;
 
     @Override
@@ -72,16 +73,43 @@ public class LugarInsertarActivity extends Activity {
                 tomarFoto();
             }
         });
+
+        if(savedInstanceState != null){
+            if (savedInstanceState.getString("Foto") != null) {
+                image.setImageURI(Uri.parse(savedInstanceState
+                        .getString("Foto")));
+                file = Uri. parse(savedInstanceState.getString("Foto"));
+            }
+        }
+    }
+
+    public void onSaveInstanceState(Bundle bundle){
+        if (file!=null){
+            bundle.putString("Foto", file.toString());
+        }
+        super.onSaveInstanceState(bundle);
     }
 
     private void tomarFoto() {
-        Intent intent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        File photo =new
-                File(Environment.getExternalStorageDirectory(),String.valueOf(Calendar.getInstance().
-                getTimeInMillis())+".jpg");
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        fotoFile = String.valueOf(Calendar.getInstance().getTimeInMillis())+".jpg";
+        File photo = new
+                File(Environment.getExternalStorageDirectory(),fotoFile);
         file = Uri.fromFile(photo);
         intent.putExtra(MediaStore. EXTRA_OUTPUT, file);
         startActivityForResult(intent, FOTOGRAFIA);
+    }
+
+    @Override
+    public void onActivityResult( int RequestCode, int ResultCode, Intent intent) {
+        if (RequestCode == FOTOGRAFIA){
+            if(ResultCode == RESULT_OK){
+                image.setImageURI(file);
+            }
+            else{
+                Toast.makeText(getApplicationContext(), "fotografia No tomada", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private void ingresar() {
@@ -89,7 +117,7 @@ public class LugarInsertarActivity extends Activity {
         String nombreLugar = nombre.getEditText().getText().toString();
         String descripcionLugar = descripcion.getEditText().getText().toString();
 
-        Lugar lugar = new Lugar(latitud, longitud, nombreLugar, descripcionLugar, "nada");
+        Lugar lugar = new Lugar(latitud, longitud, nombreLugar, descripcionLugar, fotoFile);
         helper.abrir();
         regInsertados = helper.insertar(lugar);
         helper.cerrar();

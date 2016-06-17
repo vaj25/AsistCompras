@@ -3,15 +3,15 @@ package gr23.sv.ues.fia.asistcompras.Entidades;
 /**
  * Created by Moisés on 15/06/2016.
  */
-public class UnidadMedida {
+public class unidadMedida {
     private int idUnidadMedida;
     private String nombreUM;
     private String descripcionUM;
 
-    public UnidadMedida() {
+    public unidadMedida() {
     }
 
-    public UnidadMedida(int idUnidadMedida, String nombreUM, String descripcionUM) {
+    public unidadMedida(int idUnidadMedida, String nombreUM, String descripcionUM) {
         this.idUnidadMedida = idUnidadMedida;
         this.nombreUM = nombreUM;
         this.descripcionUM = descripcionUM;

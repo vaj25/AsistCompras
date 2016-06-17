@@ -10,4 +10,13 @@ public class OfertaConsultarActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_oferta_consultar);
     }
+
+    public static class ListaActivity extends AppCompatActivity {
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_lista);
+        }
+    }
 }

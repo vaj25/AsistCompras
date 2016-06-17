@@ -42,11 +42,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "nombrelista VARCHAR(25)," +
                     "descripcionlista VARCHAR(100)," +
                     "constraint PK_LISTA primary key (idlista));");
-            db.execSQL("CREATE TABLE unidadmedida (" +
-                    "idunidadmedida INTEGER NOT NULL," +
-                    "nombreum VARCHAR(25)," +
-                    "descripcionum VARCHAR(100)," +
-                    "constraint PK_UM primary key (idunidadmedida));");
+            db.execSQL("CREATE TABLE listaproducto (" +
+                    "idlistaproducto INTEGER NOT NULL," +
+                    "descripcion VARCHAR(100)," +
+                    "constraint PK_LISTA primary key (idlistaproducto));");
             db.execSQL("CREATE TABLE detallearticulo (" +
                     "iddetallearticulo INTEGER NOT NULL," +
                     "cantidad INTEGER," +
@@ -55,8 +54,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "longitud FLOAT NULL," +
                     "idarticulo INTEGER NOT NULL," +
                     "idoferta INTEGER NOT NULL," +
-                    "idlista INTEGER NULL," +
-                    "idunidadmedida INTEGER NULL," +
                     "constraint PK_DETART primary key (iddetallearticulo));");
         } catch (SQLException e) {
             e.printStackTrace();

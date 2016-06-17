@@ -9,4 +9,6 @@
     <string name="btFoto">Tomar Foto</string>
     <string name="menu_option_delete">Eliminar</string>
     <string name="menu_option_compartir">Compartir</string>
+    <string name="escuchar">Escuchar</string>
+    <string name="hable">Hable</string>
 </resources>

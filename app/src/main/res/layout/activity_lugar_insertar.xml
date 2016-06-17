@@ -42,10 +42,32 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/area_descripcion"
+        android:id="@+id/area_tts_nombre"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/area_nombre"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/bts_nombre"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:text="@string/hable" />
+
+        <ListView
+            android:id="@+id/lVoiceNombre"
+            android:layout_width="match_parent"
+            android:layout_height="63dp">
+        </ListView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/area_descripcion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/area_tts_nombre"
         android:orientation="horizontal">
 
         <ImageView
@@ -69,14 +91,39 @@
                 android:hint="@string/descripcion"
                 android:inputType="text" />
         </android.support.design.widget.TextInputLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/area_tts_descripcion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/area_descripcion"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/bts_descripcion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:text="@string/hable" />
+
+        <ListView
+            android:id="@+id/lVoiceDescripcion"
+            android:layout_width="match_parent"
+            android:layout_height="63dp">
+        </ListView>
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/area_imagen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/area_descripcion"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_above="@+id/bottom_bar"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
 
         <ImageView
             android:id="@+id/mainimage"
@@ -120,4 +167,5 @@
             android:layout_weight="1"
             android:text="@string/aceptar" />
     </LinearLayout>
+
 </RelativeLayout>

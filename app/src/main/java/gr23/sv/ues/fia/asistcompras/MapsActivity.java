@@ -18,12 +18,19 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.List;
+
+import gr23.sv.ues.fia.asistcompras.Entidades.Lugar;
+import gr23.sv.ues.fia.asistcompras.Modelos.ControlDB;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private double latitud;
     private double longitud;
     public LocationManager locationManager;
+    private ControlDB helper;
+    private List<Lugar> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +41,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        helper = new ControlDB(this);
+        helper.abrir();
+        list = helper.consultarAllLugar();
+        helper.cerrar();
     }
 
 
@@ -108,10 +119,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(latitud, longitud);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Mi posición").snippet("Calle")
+        mMap.addMarker(new MarkerOptions().position(sydney).title("Mi posición").snippet("")
                 .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher)));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+
+        for(Lugar lugar : list){
+            LatLng posicion = new LatLng(lugar.getLatitud(), lugar.getLongitud());
+            mMap.addMarker(new MarkerOptions().position(sydney).title(lugar.getNombre()).
+                    snippet(lugar.getDescripcion()));
+        }
     }
 }

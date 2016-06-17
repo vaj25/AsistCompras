@@ -50,7 +50,10 @@
         <activity android:name=".LugarInsertarActivity" />
         <activity android:name=".LugarConsultarActivity" />
         <activity android:name=".NuevaOfertaActivity" />
-        <activity android:name=".OfertaConsultarActivity"></activity>
+        <activity android:name=".OfertaConsultarActivity" />
+        <activity
+            android:name=".MapsActivity"
+            android:label="@string/title_activity_maps"></activity>
     </application>
 
 </manifest>

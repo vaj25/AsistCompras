@@ -76,6 +76,8 @@ public class ControlDB {
             lugar.setLatitud(cur.getDouble(0));
             lugar.setLongitud(cur.getDouble(1));
             lugar.setNombre(cur.getString(2));
+            lugar.setDescripcion(cur.getString(3));
+            lugar.setImage(cur.getString(4));
             lista.add(lugar);
         }
         cur.close();

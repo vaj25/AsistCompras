@@ -58,6 +58,7 @@ public class LoginActivity extends Activity {
             public void onError(FacebookException exception) {
                 //  code to handle error
             }
+
         });
     }
 

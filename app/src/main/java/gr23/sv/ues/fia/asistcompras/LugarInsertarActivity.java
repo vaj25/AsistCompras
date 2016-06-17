@@ -83,7 +83,7 @@ public class LugarInsertarActivity extends Activity {
         }
     }
 
-    public void onSaveInstanceState(Bundle bundle){
+        public void onSaveInstanceState(Bundle bundle){
         if (file!=null){
             bundle.putString("Foto", file.toString());
         }

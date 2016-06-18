@@ -139,7 +139,7 @@ public class LugarInsertarActivity extends AppCompatActivity {
             if (savedInstanceState.getString("Foto") != null) {
                 image.setImageURI(Uri.parse(savedInstanceState
                         .getString("Foto")));
-                file = Uri. parse(savedInstanceState.getString("Foto"));
+                file = Uri.parse(savedInstanceState.getString("Foto"));
             }
         }
     }

@@ -21,7 +21,7 @@ private ListView lista;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_oferta_consultar);
         ArrayList<listaImagen> datos = new ArrayList<listaImagen>();
-        datos.add(new listaImagen(R.drawable.All_Star,"Oferta de All Star","todos los estilos a mitad de precio, por liquidacion de la tienda  "));
+        datos.add(new listaImagen(R.drawable.allstar,"Oferta de All Star","todos los estilos a mitad de precio, por liquidacion de la tienda  "));
         datos.add(new listaImagen(R.drawable.wii,"grandes descuentos para el Wii", "50% de descuento al comprar una consola al contado, INCREIBLEMENTE BARATUUUUS "));
         datos.add(new listaImagen(R.drawable.guitarra,"Guitarras Electricas","¿QUIERES INICIAR TU PROPIA BANDA? Entonces debes aproveche estos super descuento en guitarras electricas en la tienda MEGADEATH SHOP "));
         lista = (ListView) findViewById(R.id.ListView_listado);

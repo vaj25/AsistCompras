@@ -16,6 +16,8 @@ import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -158,7 +160,30 @@ public class LugarInsertarActivity extends Activity {
         intent.putExtra(MediaStore.EXTRA_OUTPUT, file);
         startActivityForResult(intent, FOTOGRAFIA);
     }
+    ////////////////////////////////////////////////////PRUEBA DEL MENU/////////////////////////////////////////
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_prueba_oferta, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
 
+        switch (item.getItemId()) {
+            case R.id.nuevaOferta:
+                Intent inte = new Intent(LugarInsertarActivity.this, NuevaOfertaActivity.class);
+                startActivity(inte);
+                return true;
+            case R.id.consultarOferta:
+                Intent inte2= new Intent(LugarInsertarActivity.this,OfertaConsultarActivity.class);
+                startActivity(inte2);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
     public void onActivityResult( int RequestCode, int ResultCode, Intent intent) {
         //camara

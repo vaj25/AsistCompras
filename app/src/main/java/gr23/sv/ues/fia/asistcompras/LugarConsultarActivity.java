@@ -30,7 +30,7 @@ public class LugarConsultarActivity extends Activity {
         helper = new ControlDB(this);
         listView = (ListView) findViewById(R.id.listLugar);
         helper.abrir();
-        //helper.llenarBD();
+        helper.llenarBD();
         listLugar = helper.consultarAllLugar();
         helper.cerrar();
         ArrayAdapter adaptador = new ArrayAdapter(this, android.R.layout.simple_list_item_1, listLugar);

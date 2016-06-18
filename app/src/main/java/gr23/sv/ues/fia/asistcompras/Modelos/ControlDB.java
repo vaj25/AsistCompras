@@ -12,7 +12,6 @@ import gr23.sv.ues.fia.asistcompras.Entidades.DetalleArticulo;
 import gr23.sv.ues.fia.asistcompras.Entidades.Lista;
 import gr23.sv.ues.fia.asistcompras.Entidades.Lugar;
 import gr23.sv.ues.fia.asistcompras.Entidades.Oferta;
-import gr23.sv.ues.fia.asistcompras.Entidades.UnidadMedida;
 
 /**
  * Created by FAMILY on 05/06/2016.
@@ -111,10 +110,6 @@ public class ControlDB {
         lgr.put("precio", detart.getPrecio());
         lgr.put("idoferta", detart.getIdOferta());
         lgr.put("idarticulo", detart.getIdArticulo());
-        lgr.put("idlista", detart.getIdLista());
-        lgr.put("idunidadmedida", detart.getIdUnidadMedida());
-        lgr.put("latitud", detart.getLatitud());
-        lgr.put("longitud", detart.getLongitud());
         contador = db.insert("detallearticulo", null, lgr);
         if(contador == -1 || contador == 0)
         {
@@ -159,23 +154,7 @@ public class ControlDB {
         }
         return regInsertados;
     }
-    public String insertar(UnidadMedida um){
-        String regInsertados="Registro Insertado Nº= ";
-        long contador = 0;
-        ContentValues lgr = new ContentValues();
-        lgr.put("idunidadmedida", um.getIdUnidadMedida());
-        lgr.put("nombreum", um.getNombreUM());
-        lgr.put("descripcionum", um.getDescripcionUM());
-        contador = db.insert("unidadmedida", null, lgr);
-        if(contador == -1 || contador == 0)
-        {
-            regInsertados = "Error al Insertar el registro, Registro Duplicado. Verificar inserción";
-        }
-        else {
-            regInsertados = regInsertados+contador;
-        }
-        return regInsertados;
-    }
+
     public List consultarAllDetalleArticulo(){
         abrir();
         List<ArrayList> lista= new ArrayList<>();

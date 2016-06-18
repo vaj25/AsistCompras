@@ -10,8 +10,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-    private static final String BASE_DATOS = "asistComprasv3.s3db";
-    private static final int VERSION = 1;
+    private static final String BASE_DATOS = "asistComprasv5.s3db";
+    private static final int VERSION = 2;
     private ControlDB helper;
     DatabaseHelper (Context context) {
         super(context,BASE_DATOS, null, VERSION);
@@ -42,21 +42,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "nombrelista VARCHAR(25)," +
                     "descripcionlista VARCHAR(100)," +
                     "constraint PK_LISTA primary key (idlista));");
-            db.execSQL("CREATE TABLE unidadmedida (" +
-                    "idunidadmedida INTEGER NOT NULL," +
-                    "nombreum VARCHAR(25)," +
-                    "descripcionum VARCHAR(100)," +
-                    "constraint PK_UM primary key (idunidadmedida));");
             db.execSQL("CREATE TABLE detallearticulo (" +
                     "iddetallearticulo INTEGER NOT NULL," +
                     "cantidad INTEGER," +
                     "precio FLOAT," +
-                    "latitud FLOAT NULL," +
-                    "longitud FLOAT NULL," +
                     "idarticulo INTEGER NOT NULL," +
                     "idoferta INTEGER NOT NULL," +
-                    "idlista INTEGER NULL," +
-                    "idunidadmedida INTEGER NULL," +
                     "constraint PK_DETART primary key (iddetallearticulo));");
         } catch (SQLException e) {
             e.printStackTrace();

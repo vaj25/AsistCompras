@@ -9,24 +9,16 @@ public class DetalleArticulo {
     private double precio;
     private int idArticulo;
     private int idOferta;
-    private int idLista;
-    private int idUnidadMedida;
-    private double latitud;
-    private double longitud;
 
     public DetalleArticulo() {
     }
 
-    public DetalleArticulo(int idDetalleArticulo, int cantidad, double precio, int idArticulo, int idOferta, int idLista, int idUnidadMedida, double latitud, double longitud) {
+    public DetalleArticulo(int idDetalleArticulo, int cantidad, double precio, int idArticulo, int idOferta) {
         this.idDetalleArticulo = idDetalleArticulo;
         this.cantidad = cantidad;
         this.precio = precio;
         this.idArticulo = idArticulo;
         this.idOferta = idOferta;
-        this.idLista = idLista;
-        this.idUnidadMedida = idUnidadMedida;
-        this.latitud = latitud;
-        this.longitud = longitud;
     }
 
     public int getIdDetalleArticulo() {
@@ -68,39 +60,6 @@ public class DetalleArticulo {
     public void setIdOferta(int idOferta) {
         this.idOferta = idOferta;
     }
-
-    public int getIdLista() {
-        return idLista;
-    }
-
-    public void setIdLista(int idLista) {
-        this.idLista = idLista;
-    }
-
-    public int getIdUnidadMedida() {
-        return idUnidadMedida;
-    }
-
-    public void setIdUnidadMedida(int idUnidadMedida) {
-        this.idUnidadMedida = idUnidadMedida;
-    }
-
-    public double getLatitud() {
-        return latitud;
-    }
-
-    public void setLatitud(double latitud) {
-        this.latitud = latitud;
-    }
-
-    public double getLongitud() {
-        return longitud;
-    }
-
-    public void setLongitud(double longitud) {
-        this.longitud = longitud;
-    }
-    @Override
 
     public String toString() {
         return String.valueOf(idDetalleArticulo)+"-";

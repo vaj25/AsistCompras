@@ -50,8 +50,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "iddetallearticulo INTEGER NOT NULL," +
                     "cantidad INTEGER," +
                     "precio FLOAT," +
-                    "latitud FLOAT NULL," +
-                    "longitud FLOAT NULL," +
                     "idarticulo INTEGER NOT NULL," +
                     "idoferta INTEGER NOT NULL," +
                     "constraint PK_DETART primary key (iddetallearticulo));");

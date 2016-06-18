@@ -12,25 +12,40 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.speech.RecognizerIntent;
+import android.speech.tts.TextToSpeech;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 import gr23.sv.ues.fia.asistcompras.Entidades.Lugar;
 import gr23.sv.ues.fia.asistcompras.Modelos.ControlDB;
 
-public class LugarInsertarActivity extends Activity {
+public class LugarInsertarActivity extends AppCompatActivity {
 
     private TextInputLayout nombre;
     private TextInputLayout descripcion;
     public LocationManager locationManager;
     private ImageView image;
+    ListView lvn;
+    ListView lvd;
+    ArrayAdapter<String> adaptador;
+    static final int checkNombre = 1111;
+    static final int checkDescripcion = 1112;
     final int FOTOGRAFIA = 654;
     Uri file;
     private double latitud;
@@ -46,6 +61,8 @@ public class LugarInsertarActivity extends Activity {
         nombre = (TextInputLayout) findViewById(R.id.til_nombre);
         descripcion = (TextInputLayout) findViewById(R.id.til_descripcion);
         image = (ImageView) findViewById(R.id.mainimage);
+        lvn = (ListView) findViewById(R.id.lVoiceNombre);
+        lvd = (ListView) findViewById(R.id.lVoiceDescripcion);
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         helper = new ControlDB(this);
 
@@ -74,16 +91,61 @@ public class LugarInsertarActivity extends Activity {
             }
         });
 
+        Button btnTsNombre = (Button) findViewById(R.id.bts_nombre);
+        btnTsNombre.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                // Si entramos a dar clic en el boton
+                Intent i = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+                i.putExtra(RecognizerIntent. EXTRA_LANGUAGE_MODEL,
+                        RecognizerIntent. LANGUAGE_MODEL_FREE_FORM);
+                i.putExtra(RecognizerIntent. EXTRA_PROMPT, "Hable ahora ");
+                startActivityForResult(i, checkNombre);
+            }
+        });
+
+        Button btnTsDescripcion = (Button) findViewById(R.id.bts_descripcion);
+        btnTsDescripcion.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                // Si entramos a dar clic en el boton
+                Intent i = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+                i.putExtra(RecognizerIntent. EXTRA_LANGUAGE_MODEL,
+                        RecognizerIntent. LANGUAGE_MODEL_FREE_FORM);
+                i.putExtra(RecognizerIntent. EXTRA_PROMPT, "Hable ahora ");
+                startActivityForResult(i, checkDescripcion);
+            }
+        });
+
+        lvn.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String text = (String) adaptador.getItem(position);
+                nombre.getEditText().setText(text);
+                adaptador.clear();
+            }
+        });
+
+        lvd.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String text = (String) adaptador.getItem(position);
+                descripcion.getEditText().setText(text);
+                adaptador.clear();
+            }
+        });
+
         if(savedInstanceState != null){
             if (savedInstanceState.getString("Foto") != null) {
                 image.setImageURI(Uri.parse(savedInstanceState
                         .getString("Foto")));
-                file = Uri. parse(savedInstanceState.getString("Foto"));
+                file = Uri.parse(savedInstanceState.getString("Foto"));
             }
         }
     }
 
-        public void onSaveInstanceState(Bundle bundle){
+
+    public void onSaveInstanceState(Bundle bundle){
         if (file!=null){
             bundle.putString("Foto", file.toString());
         }
@@ -96,18 +158,69 @@ public class LugarInsertarActivity extends Activity {
         File photo = new
                 File(Environment.getExternalStorageDirectory(),fotoFile);
         file = Uri.fromFile(photo);
-        intent.putExtra(MediaStore. EXTRA_OUTPUT, file);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, file);
         startActivityForResult(intent, FOTOGRAFIA);
     }
+    ////////////////////////////////////////////////////PRUEBA DEL MENU/////////////////////////////////////////
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_prueba_oferta, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
 
+        switch (item.getItemId()) {
+            case R.id.nuevaOferta:
+                Intent inte = new Intent(LugarInsertarActivity.this, NuevaOfertaActivity.class);
+                startActivity(inte);
+                return true;
+            case R.id.consultarOferta:
+                Intent inte2= new Intent(LugarInsertarActivity.this,OfertaConsultarActivity.class);
+                startActivity(inte2);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
     public void onActivityResult( int RequestCode, int ResultCode, Intent intent) {
+        //camara
         if (RequestCode == FOTOGRAFIA){
             if(ResultCode == RESULT_OK){
                 image.setImageURI(file);
             }
             else{
-                Toast.makeText(getApplicationContext(), "fotografia No tomada", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Fotografia No tomada", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        /*Speech
+        * la varable chech__ es un identificador
+        * para saber que tipo de accion hacer
+        */
+        if (RequestCode==checkNombre ){
+            if(ResultCode==RESULT_OK){
+                ArrayList<String> results =
+                        intent.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                adaptador = new
+                        ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,results);
+                lvn.setAdapter(adaptador);
+            } else {
+                Toast.makeText(getApplicationContext(), "Audio No tomado", Toast.LENGTH_SHORT).show();
+            }
+
+        } else if(RequestCode==checkDescripcion){
+            if(ResultCode==RESULT_OK){
+            ArrayList<String> results =
+                    intent.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+            adaptador = new
+                    ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,results);
+            lvd.setAdapter(adaptador);
+            }else {
+                Toast.makeText(getApplicationContext(), "Audio No tomado", Toast.LENGTH_SHORT).show();
             }
         }
     }

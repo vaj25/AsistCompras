@@ -8,11 +8,11 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 import gr23.sv.ues.fia.asistcompras.Entidades.Articulo;
-import gr23.sv.ues.fia.asistcompras.Entidades.detalleArticulo;
+import gr23.sv.ues.fia.asistcompras.Entidades.DetalleArticulo;
 import gr23.sv.ues.fia.asistcompras.Entidades.Lista;
 import gr23.sv.ues.fia.asistcompras.Entidades.Lugar;
 import gr23.sv.ues.fia.asistcompras.Entidades.Oferta;
-import gr23.sv.ues.fia.asistcompras.Entidades.ListaProducto;
+import gr23.sv.ues.fia.asistcompras.Entidades.UnidadMedida;
 
 /**
  * Created by FAMILY on 05/06/2016.
@@ -102,7 +102,7 @@ public class ControlDB {
         return regInsertados;
     }
 
-    public String insertar(detalleArticulo detart){
+    public String insertar(DetalleArticulo detart){
         String regInsertados="Registro Insertado Nº= ";
         long contador = 0;
         ContentValues lgr = new ContentValues();
@@ -128,8 +128,11 @@ public class ControlDB {
         long contador = 0;
         ContentValues lgr = new ContentValues();
         lgr.put("idoferta", oferta.getIdOferta());
+        lgr.put("nombre",oferta.getNombre());
+        lgr.put("descripcion",oferta.getDescripcion());
         lgr.put("foto", oferta.isFoto());
         lgr.put("video", oferta.isVideo());
+
         contador = db.insert("oferta", null, lgr);
         if(contador == -1 || contador == 0)
         {
@@ -175,6 +178,7 @@ public class ControlDB {
         }
         return regInsertados;
     }
+
 
     public List consultarAllDetalleArticulo(){
         abrir();

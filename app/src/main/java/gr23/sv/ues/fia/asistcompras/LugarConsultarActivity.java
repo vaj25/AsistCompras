@@ -6,7 +6,9 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.ShareActionProvider;
@@ -17,12 +19,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.File;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import gr23.sv.ues.fia.asistcompras.Entidades.Image;
 import gr23.sv.ues.fia.asistcompras.Entidades.Lugar;
 import gr23.sv.ues.fia.asistcompras.Entidades.Social;
+import gr23.sv.ues.fia.asistcompras.Entidades.listaImagen;
+import gr23.sv.ues.fia.asistcompras.Entidades.listaImagenAdapter;
 import gr23.sv.ues.fia.asistcompras.Modelos.ControlDB;
 
 
@@ -52,10 +63,40 @@ public class LugarConsultarActivity extends ActionBarActivity implements SensorE
         //helper.llenarBD();
         listLugar = helper.consultarAllLugar();
         helper.cerrar();
+
+        ArrayList<listaImagen> datos = new ArrayList<listaImagen>();
+
+        for(Lugar lugar : listLugar){
+            datos.add(new listaImagen(lugar.getImage(),lugar.getNombre(),lugar.getDescripcion()));
+        }
+
+        listView.setAdapter(new listaImagenAdapter(this, R.layout.oferta, datos) {
+            @Override
+            public void onOferta(Object entrada, View view) {
+                if (entrada != null) {
+                    TextView texto_superior_entrada = (TextView) view.findViewById(R.id.textView_superior);
+                    if (texto_superior_entrada != null)
+                        texto_superior_entrada.setText(((listaImagen) entrada).get_textoEncima());
+
+                    TextView texto_inferior_entrada = (TextView) view.findViewById(R.id.textView_inferior);
+                    if (texto_inferior_entrada != null)
+                        texto_inferior_entrada.setText(((listaImagen) entrada).get_textoDebajo());
+
+                    ImageView imagen_entrada = (ImageView) view.findViewById(R.id.imageView_imagen);
+                    if (imagen_entrada != null){
+                        File photo = new File(Environment.getExternalStorageDirectory()+"/Image",
+                                ((listaImagen) entrada).get_idImagen());
+                        imagen_entrada.setImageURI(Uri.fromFile(photo));
+                    }
+                }
+            }
+        });
+        /*
         ArrayAdapter adaptador = new ArrayAdapter(this, android.R.layout.simple_list_item_1, listLugar);
         adaptador.setDropDownViewResource(android.R.layout.simple_list_item_1);
         listView.setAdapter(adaptador);
         registerForContextMenu(listView);
+        */
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -148,12 +148,30 @@ public class NuevaOfertaActivity extends AppCompatActivity {
 
     private void tomarFoto() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        fotoFile = String.valueOf(Calendar.getInstance().getTimeInMillis()) + ".jpg";
-        File photo = new
-                File(Environment.getExternalStorageDirectory(), fotoFile);
+        /*
+         * Crea una imagen en la carpeta Image
+         */
+        fotoFile = String.valueOf(Calendar.getInstance().getTimeInMillis())+".jpg";
+        String file_path = Environment.getExternalStorageDirectory()+"/Image";
+
+        //verifica la existencia de la carpeta
+        File dir = new File(file_path);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+
+        File photo = new File(Environment.getExternalStorageDirectory()+"/Image" ,fotoFile);
         file = Uri.fromFile(photo);
+
         intent.putExtra(MediaStore.EXTRA_OUTPUT, file);
         startActivityForResult(intent, FOTOGRAFIA);
+
+        /*
+        * codigo para mostrar una imagen en el imageView
+        * File photo = new  File(Environment.getExternalStorageDirectory()+"/Imagen" ,"imagen.jpg");
+        * file = Uri.fromFile(photo);
+        * image.setImageURI(file);
+        * */
     }
 
     @Override

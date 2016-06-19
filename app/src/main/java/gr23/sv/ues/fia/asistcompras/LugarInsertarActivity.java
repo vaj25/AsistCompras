@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -32,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
+import gr23.sv.ues.fia.asistcompras.Entidades.Image;
 import gr23.sv.ues.fia.asistcompras.Entidades.Lugar;
 import gr23.sv.ues.fia.asistcompras.Modelos.ControlDB;
 
@@ -154,10 +156,21 @@ public class LugarInsertarActivity extends AppCompatActivity {
 
     private void tomarFoto() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        /*
+         * Crea una imagen en la carpeta Image
+         */
         fotoFile = String.valueOf(Calendar.getInstance().getTimeInMillis())+".jpg";
-        File photo = new
-                File(Environment.getExternalStorageDirectory(),fotoFile);
+        String file_path = Environment.getExternalStorageDirectory()+"/Image";
+
+        //verifica la existencia de la carpeta
+        File dir = new File(file_path);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+
+        File photo = new File(Environment.getExternalStorageDirectory()+"/Image" ,fotoFile);
         file = Uri.fromFile(photo);
+
         intent.putExtra(MediaStore.EXTRA_OUTPUT, file);
         startActivityForResult(intent, FOTOGRAFIA);
     }

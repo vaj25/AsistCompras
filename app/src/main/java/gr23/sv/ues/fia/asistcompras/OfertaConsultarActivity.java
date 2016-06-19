@@ -6,6 +6,8 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.net.Uri;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,16 +17,19 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import gr23.sv.ues.fia.asistcompras.Entidades.Oferta;
 import gr23.sv.ues.fia.asistcompras.Entidades.listaImagen;
 import gr23.sv.ues.fia.asistcompras.Entidades.listaImagenAdapter;
+import gr23.sv.ues.fia.asistcompras.Modelos.ControlDB;
 
 public class OfertaConsultarActivity extends AppCompatActivity implements SensorEventListener {
 
     private ListView lista;
-
+    ControlDB helper;
     private static final float SHAKE_THRESHOLD = 1.1f;
     private static final int SHAKE_WAIT_TIME_MS = 250;
     SensorManager mSensorManager;
@@ -38,11 +43,19 @@ public class OfertaConsultarActivity extends AppCompatActivity implements Sensor
 
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mSensorAcc = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-
         ArrayList<listaImagen> datos = new ArrayList<listaImagen>();
-        datos.add(new listaImagen(R.drawable.image,"Oferta de All Star","todos los estilos a mitad de precio, por liquidacion de la tienda  "));
-        datos.add(new listaImagen(R.drawable.wii,"grandes descuentos para el Wii", "50% de descuento al comprar una consola al contado, INCREIBLEMENTE BARATUUUUS "));
-        datos.add(new listaImagen(R.drawable.guitarra,"Guitarras Electricas","¿QUIERES INICIAR TU PROPIA BANDA? Entonces debes aproveche estos super descuento en guitarras electricas en la tienda MEGADEATH SHOP "));
+        List<Oferta> ofertaList=new ArrayList<>();
+        ofertaList=helper.consultarOferta();
+        for( int i = 0 ; i < ofertaList.size() ; i++ ){
+            Oferta oferta=new Oferta();
+            oferta=ofertaList.get(i);
+            datos.add(new listaImagen(oferta.isFoto(),oferta.getNombre(),oferta.getDescripcion()));
+        }
+
+       // datos.add(new listaImagen(R.drawable.image,"Oferta de All Star","todos los estilos a mitad de precio, por liquidacion de la tienda  "));
+        //datos.add(new listaImagen(R.drawable.wii,"grandes descuentos para el Wii", "50% de descuento al comprar una consola al contado, INCREIBLEMENTE BARATUUUUS "));
+        //datos.add(new listaImagen(R.drawable.guitarra,"Guitarras Electricas","¿QUIERES INICIAR TU PROPIA BANDA? Entonces debes aproveche estos super descuento en guitarras electricas en la tienda MEGADEATH SHOP "));
+
         lista = (ListView) findViewById(R.id.ListView_listado);
         lista.setAdapter(new listaImagenAdapter(this, R.layout.oferta, datos){
             @Override
@@ -57,8 +70,12 @@ public class OfertaConsultarActivity extends AppCompatActivity implements Sensor
                         texto_inferior_entrada.setText(((listaImagen) entrada).get_textoDebajo());
 
                     ImageView imagen_entrada = (ImageView) view.findViewById(R.id.imageView_imagen);
-                    if (imagen_entrada != null)
+                    //if (imagen_entrada != null)
+                    /*    File photo = new
+                                File(Environment.getExternalStorageDirectory(), );
+                    file = Uri.fromFile(photo);
                         imagen_entrada.setImageResource(((listaImagen) entrada).get_idImagen());
+                   */
                 }
             }
         });

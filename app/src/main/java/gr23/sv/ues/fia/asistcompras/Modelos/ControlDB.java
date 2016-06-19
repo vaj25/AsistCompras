@@ -140,6 +140,23 @@ public class ControlDB {
         }
         return regInsertados;
     }
+    public List consultarOferta(){
+        abrir();
+       List<Oferta> ofertaList=new ArrayList<>();
+        Cursor cur = db.rawQuery("select * from oferta",null );
+        while(cur.moveToNext()){
+            Oferta oferta=new Oferta();
+            oferta.setIdOferta(cur.getInt(0));
+            oferta.setNombre(cur.getString(1));
+            oferta.setDescripcion(cur.getString(2));
+            oferta.setFoto(cur.getString(3));
+            oferta.setVideo(cur.getString(4));
+            ofertaList.add(oferta);
+        }
+        cur.close();
+        db.close();
+        return ofertaList;
+    }
     public String insertar(Lista lista){
         String regInsertados="Registro Insertado Nº= ";
         long contador = 0;

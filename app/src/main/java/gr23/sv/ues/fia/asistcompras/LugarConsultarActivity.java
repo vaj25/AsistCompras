@@ -1,6 +1,5 @@
 package gr23.sv.ues.fia.asistcompras;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.hardware.Sensor;
@@ -8,7 +7,11 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.ShareActionProvider;
 import android.view.ContextMenu;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,19 +22,21 @@ import android.widget.Toast;
 import java.util.Iterator;
 import java.util.List;
 import gr23.sv.ues.fia.asistcompras.Entidades.Lugar;
+import gr23.sv.ues.fia.asistcompras.Entidades.Social;
 import gr23.sv.ues.fia.asistcompras.Modelos.ControlDB;
 
-public class LugarConsultarActivity extends Activity implements SensorEventListener {
+
+public class LugarConsultarActivity extends ActionBarActivity implements SensorEventListener {
 
     private List<Lugar> listLugar;
     private ListView listView;
-
     private ControlDB helper;
     private static final float SHAKE_THRESHOLD = 1.1f;
     private static final int SHAKE_WAIT_TIME_MS = 250;
     SensorManager mSensorManager;
     Sensor mSensorAcc;
     private long mShakeTime = 0;
+    private ShareActionProvider myShareActionProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +57,21 @@ public class LugarConsultarActivity extends Activity implements SensorEventListe
         listView.setAdapter(adaptador);
         registerForContextMenu(listView);
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_compartir, menu);
+        MenuItem shareOpt = menu.findItem(R.id.menu_item_share);
+        //Inicializamos nuestro ShareActionProvider
+        myShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareOpt);
+        //Creamos nuestro sharer Intent
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.setType("text/plain");
+        i.putExtra(Intent.EXTRA_TEXT, "mensaje de prueba");
+        myShareActionProvider.setShareIntent(i);
+        return true;
+    }
+
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
@@ -92,6 +112,12 @@ public class LugarConsultarActivity extends Activity implements SensorEventListe
                     Toast.makeText(this,"Error al eliminar", Toast.LENGTH_SHORT).show();
                 }
                 return true;
+            case R.id.compartir:
+            case R.id.blue:
+            case R.id.wifi:
+            case R.id.social:
+                Social social=new Social();
+                social.share(this,"prueba","prueba");
             default:
                 return super.onContextItemSelected(item);
         }

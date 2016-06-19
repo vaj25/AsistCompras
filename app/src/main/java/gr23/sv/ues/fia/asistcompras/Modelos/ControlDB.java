@@ -198,9 +198,6 @@ public class ControlDB {
         cv.put("latitud", String.valueOf(0.0));
         cv.put("longitud", String.valueOf(0.0));
         int contador=0;
-        if (verificarIntegridad(lugar,1)) {
-            contador+=db.update("detallearticulo", cv, "latitud = ? AND longitud = ?", id);
-        }
         String where="latitud='"+lugar.getLatitud()+"'";
         where=where+" AND longitud='"+lugar.getLongitud()+"'";
         contador+=db.delete("lugar", where, null);
@@ -209,18 +206,6 @@ public class ControlDB {
 
     public boolean verificarIntegridad(Object dato, int relacion) throws SQLException {
         switch (relacion) {
-            case 1: {
-                //Verificar si existe Lugar en DetalleArticulo (Eliminar Lugar)
-                Lugar lugar = (Lugar) dato;
-                String[] id1 = {String.valueOf(lugar.getLatitud()), String.valueOf(lugar.getLongitud())};
-                abrir();
-                Cursor cursor1 = db.query("detallearticulo", null, "latitud = ? AND longitud = ?", id1, null, null, null);
-                if (cursor1.moveToFirst()) {
-                    //Se encontraron datos
-                    return true;
-                }
-                return false;
-            }
             default:
                 return false;
         }

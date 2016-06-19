@@ -210,6 +210,17 @@ public class ControlDB {
                 return false;
         }
 }
+    //by Moisés Herrera
+    public int contarRegistros(String tabla,String id) {
+        Integer aux=0;
+        String[] campos = new String[]{id};
+        abrir();
+        int contador=0;
+        Cursor c = db.query(tabla, campos, null, null, null, null,null);
+        c.moveToLast();
+        aux=c.getInt(0)+1;
+        return aux;
+    }
     public String llenarBD(){
         final double [] VLlatitud={6596.3,785451.3,4545.6,784.3};
         final double[] VLlongitud={7845.6,4512.3,7889.2,452.3};

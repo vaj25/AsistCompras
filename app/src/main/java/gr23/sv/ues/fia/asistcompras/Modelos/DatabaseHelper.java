@@ -34,8 +34,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "constraint PK_ARTICULO primary key (idarticulo));");
             db.execSQL("CREATE TABLE oferta (" +
                     "idoferta INTEGER NOT NULL," +
+                    "nombre VARCHAR(40)"+
+                    "descripcion VARCHAR(100)"+
                     "foto CHAR(20)," +
                     "video CHAR(20)," +
+                    "nombreLugar CHAR(30)"+
                     "constraint PK_OFERTA primary key (idoferta));");
             db.execSQL("CREATE TABLE lista (" +
                     "idlista INTEGER NOT NULL," +

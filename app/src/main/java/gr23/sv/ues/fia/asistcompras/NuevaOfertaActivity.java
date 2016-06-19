@@ -294,11 +294,11 @@ public class NuevaOfertaActivity extends AppCompatActivity {
 
     private void ingresar() {
         String regInsertados;
+        int id=helper.contarRegistros("oferta","idoferta");
         String nombreOf = nombreOferta.getEditText().getText().toString();
         String descripcionOf = descripcionOferta.getEditText().getText().toString();
-        /// solo para q no de error
-        int idOferta = 1;
-        Oferta oferta = new Oferta(idOferta, nombreOf, descripcionOf, fotoFile, "");
+
+        Oferta oferta = new Oferta(id, nombreOf, descripcionOf, fotoFile, "");
         helper.abrir();
         regInsertados = helper.insertar(oferta);
         helper.cerrar();

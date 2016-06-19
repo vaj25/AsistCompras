@@ -29,7 +29,7 @@ import java.util.List;
 import gr23.sv.ues.fia.asistcompras.Entidades.Lugar;
 import gr23.sv.ues.fia.asistcompras.Modelos.ControlDB;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, SensorEventListener {
 
     private GoogleMap mMap;
     private double latitud;
@@ -38,6 +38,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ControlDB helper;
     private List<Lugar> list;
     private MainActivity acc;
+
+    //acelerometro
+    private static final float SHAKE_THRESHOLD = 1.1f;
+    private static final int SHAKE_WAIT_TIME_MS = 250;
+    SensorManager mSensorManager;
+    Sensor mSensorAcc;
+    private long mShakeTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +56,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mSensorAcc = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
         helper = new ControlDB(this);
         helper.abrir();
@@ -94,6 +104,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             return;
         }
         locationManager.removeUpdates(locationListener);
+        mSensorManager.unregisterListener(this);
     }
 
     @Override
@@ -113,6 +124,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 0, locationListener);
         locationManager.requestLocationUpdates(
                 LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+        mSensorManager.registerListener(this, mSensorAcc, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     /**
@@ -138,6 +150,40 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mMap.addMarker(new MarkerOptions().position(sydney).title(lugar.getNombre()).
                     snippet(lugar.getDescripcion()));
         }
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            detectShake(event);
+        }
+    }
+
+    private void detectShake(SensorEvent event) {
+        long now = System.currentTimeMillis();
+
+        if ((now - mShakeTime) > SHAKE_WAIT_TIME_MS) {
+            mShakeTime = now;
+
+            float gX = event.values[0] / SensorManager.GRAVITY_EARTH;
+            float gY = event.values[1] / SensorManager.GRAVITY_EARTH;
+            float gZ = event.values[2] / SensorManager.GRAVITY_EARTH;
+
+            // gForce will be close to 1 when there is no movement
+            double gForce = Math.sqrt(gX * gX + gY * gY + gZ * gZ);
+
+            // Change background color if gForce exceeds threshold;
+            // otherwise, reset the color
+            if (gForce > SHAKE_THRESHOLD) {
+                Intent inte = new Intent(MapsActivity.this, LugarInsertarActivity.class);
+                startActivity(inte);
+            }
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
     }
 
     /*

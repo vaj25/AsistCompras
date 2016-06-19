@@ -12,5 +12,6 @@
     <string name="escuchar">Escuchar</string>
     <string name="hable">Hable</string>
     <string name="oferta">Oferta</string>
+    <string name="usuario">Usuario Header</string>
     <string name="tit_share">Titulo</string>
 </resources>

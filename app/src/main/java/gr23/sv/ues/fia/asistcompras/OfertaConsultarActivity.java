@@ -95,6 +95,16 @@ public class OfertaConsultarActivity extends AppCompatActivity implements Sensor
             }
         });
 
+
+
+
+       //------------------------------------------------------------------------
+
+
+
+
+
+
     }
 
     @Override

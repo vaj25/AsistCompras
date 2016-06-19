@@ -11,10 +11,17 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.speech.RecognizerIntent;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -48,11 +55,18 @@ public class NuevaOfertaActivity extends AppCompatActivity {
     private String fotoFile;
     private ControlDB helper;
 
+
+//------- var menu lateral -------------
+    private Toolbar appbar;
+    private DrawerLayout drawerLayout;
+    private NavigationView navView;
+    //--------------------fin var menu lateral------------------------
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nueva_oferta);
-        getSupportActionBar().setTitle("Nueva Oferta");
+//        getSupportActionBar().setTitle("Nueva Oferta");
 
         nombreOferta = (TextInputLayout) findViewById(R.id.til_nombre_oferta);
         descripcionOferta = (TextInputLayout) findViewById(R.id.til_descripcion_oferta);
@@ -137,6 +151,71 @@ public class NuevaOfertaActivity extends AppCompatActivity {
                 file = Uri.parse(savedInstanceState.getString("Foto"));
             }
         }
+
+
+
+
+
+
+        //------------------------------------menu lateral-------------------------------------------------------
+
+        appbar = (Toolbar) findViewById(R.id.appbar);
+        setSupportActionBar(appbar);
+
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_nav_menu);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        navView = (NavigationView)findViewById(R.id.navview);
+
+        navView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+
+                        boolean fragmentTransaction = false;
+                        Fragment fragment = null;
+
+                        switch (menuItem.getItemId()) {
+                            case R.id.menu_seccion_1:
+                                Intent inte = new Intent(NuevaOfertaActivity.this, NuevaOfertaActivity.class);
+                                startActivity(inte);
+                                //fragment = new Fragment1();
+                                // fragmentTransaction = true;
+                                break;
+                            case R.id.menu_seccion_2:
+                                Intent inte2 = new Intent(NuevaOfertaActivity.this, LugarConsultarActivity.class);
+                                startActivity(inte2);
+                                break;
+                            case R.id.menu_seccion_3:
+                                fragment = new Fragment1();
+                                fragmentTransaction = true;
+                                break;
+                            case R.id.menu_opcion_1:
+                                Log.i("NavigationView", "Pulsada opción 1");
+                                break;
+                            case R.id.menu_opcion_2:
+                                Log.i("NavigationView", "Pulsada opción 2");
+                                break;
+                        }
+
+                        if(fragmentTransaction) {
+                            getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.content_frame, fragment)
+                                    .commit();
+
+                            menuItem.setChecked(true);
+                            getSupportActionBar().setTitle(menuItem.getTitle());
+                        }
+
+                        drawerLayout.closeDrawers();
+
+                        return true;
+                    }
+                });
+
+
+        //----------------------------------fin menu lateral---------------------------------------
     }/////////////////fin onCreate
 
     public void onSaveInstanceState(Bundle bundle) {
@@ -226,6 +305,22 @@ public class NuevaOfertaActivity extends AppCompatActivity {
 
         Toast.makeText(this, regInsertados, Toast.LENGTH_SHORT).show();
     }
+//-------------------------------parte de menu lateral--------------------------------
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch(item.getItemId()) {
+            case android.R.id.home:
+                drawerLayout.openDrawer(GravityCompat.START);
+                return true;
+            //...
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+//----------------------------------fin parte de menu lateral--------------------------------------------
+
 }
 
     /*LocationListener locationListener = new LocationListener() {

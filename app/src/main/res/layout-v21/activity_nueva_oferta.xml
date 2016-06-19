@@ -8,15 +8,14 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context=".MapsActivity">
-
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:orientation="horizontal"
         android:clickable="true"
         tools:context=".MapsActivity"
-        tools:showIn="@layout/activity_maps">
+        tools:showIn="@layout/activity_nueva_oferta">
 
         <!-- Toolbar -->
         <android.support.v7.widget.Toolbar
@@ -26,13 +25,13 @@
             android:layout_width="match_parent"
             android:minHeight="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
+            android:orientation="horizontal"
             android:elevation="4dp"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
 
     </LinearLayout>
-
 
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -44,12 +43,11 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/place_autocomplete_separator_start"
     tools:context="gr23.sv.ues.fia.asistcompras.OfertaConsultarActivity">
+    
 
 
 
-
-
-        <LinearLayout
+    <LinearLayout
             android:id="@+id/area_nombre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

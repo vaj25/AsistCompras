@@ -8,11 +8,17 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.os.Environment;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
-
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ShareActionProvider;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,7 +28,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
-
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,7 +44,7 @@ import gr23.sv.ues.fia.asistcompras.Entidades.listaImagenAdapter;
 import gr23.sv.ues.fia.asistcompras.Modelos.ControlDB;
 
 
-public class LugarConsultarActivity extends ActionBarActivity implements SensorEventListener {
+public class LugarConsultarActivity extends AppCompatActivity implements SensorEventListener {
 
     private List<Lugar> listLugar;
     private ListView listView;
@@ -50,6 +55,12 @@ public class LugarConsultarActivity extends ActionBarActivity implements SensorE
     Sensor mSensorAcc;
     private long mShakeTime = 0;
     private ShareActionProvider myShareActionProvider;
+
+    //------- var menu lateral -------------
+    private Toolbar appbar;
+    private DrawerLayout drawerLayout;
+    private NavigationView navView;
+    //--------------------fin var menu lateral------------------------
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +104,67 @@ public class LugarConsultarActivity extends ActionBarActivity implements SensorE
                 }
             }
         });
+
+
+        //------------------------------------menu lateral-------------------------------------------------------
+
+        appbar = (Toolbar) findViewById(R.id.appbar);
+        setSupportActionBar(appbar);
+
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_nav_menu);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        navView = (NavigationView)findViewById(R.id.navview);
+
+        navView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+
+                        boolean fragmentTransaction = false;
+                        Fragment fragment = null;
+
+                        switch (menuItem.getItemId()) {
+                            case R.id.menu_seccion_1:
+                                Intent inte = new Intent(LugarConsultarActivity.this, NuevaOfertaActivity.class);
+                                startActivity(inte);
+                                //fragment = new Fragment1();
+                                // fragmentTransaction = true;
+                                break;
+                            case R.id.menu_seccion_2:
+                                Intent inte2 = new Intent(LugarConsultarActivity.this, LugarConsultarActivity.class);
+                                startActivity(inte2);
+                                break;
+                            case R.id.menu_seccion_3:
+                                fragment = new Fragment1();
+                                fragmentTransaction = true;
+                                break;
+                            case R.id.menu_opcion_1:
+                                Log.i("NavigationView", "Pulsada opción 1");
+                                break;
+                            case R.id.menu_opcion_2:
+                                Log.i("NavigationView", "Pulsada opción 2");
+                                break;
+                        }
+
+                        if(fragmentTransaction) {
+                            getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.content_frame, fragment)
+                                    .commit();
+
+                            menuItem.setChecked(true);
+                            getSupportActionBar().setTitle(menuItem.getTitle());
+                        }
+
+                        drawerLayout.closeDrawers();
+
+                        return true;
+                    }
+                });
+
+
+        //----------------------------------fin menu lateral---------------------------------------
         /*
         ArrayAdapter adaptador = new ArrayAdapter(this, android.R.layout.simple_list_item_1, listLugar);
         adaptador.setDropDownViewResource(android.R.layout.simple_list_item_1);
@@ -215,5 +287,21 @@ public class LugarConsultarActivity extends ActionBarActivity implements SensorE
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
+
+    //-------------------------------parte de menu lateral--------------------------------
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch(item.getItemId()) {
+            case android.R.id.home:
+                drawerLayout.openDrawer(GravityCompat.START);
+                return true;
+            //...
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+//----------------------------------fin parte de menu lateral--------------------------------------------
 
 }

@@ -2,6 +2,7 @@ package gr23.sv.ues.fia.asistcompras;
 
 import android.*;
 import android.app.Activity;
+import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -12,9 +13,17 @@ import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.app.ActionBar;
+import android.util.Log;
+import android.view.MenuItem;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -23,13 +32,12 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-
 import java.util.List;
 
 import gr23.sv.ues.fia.asistcompras.Entidades.Lugar;
 import gr23.sv.ues.fia.asistcompras.Modelos.ControlDB;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, SensorEventListener {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, SensorEventListener {
 
     private GoogleMap mMap;
     private double latitud;
@@ -38,6 +46,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ControlDB helper;
     private List<Lugar> list;
     private MainActivity acc;
+    private Toolbar appbar;
+    private DrawerLayout drawerLayout;
+    private NavigationView navView;
 
     //acelerometro
     private static final float SHAKE_THRESHOLD = 1.1f;
@@ -64,6 +75,64 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         helper.abrir();
         list = helper.consultarAllLugar();
         helper.cerrar();
+
+
+        //-------------------------------------------------------------------------------------------
+
+        appbar = (Toolbar) findViewById(R.id.appbar);
+        setSupportActionBar(appbar);
+
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_nav_menu);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        navView = (NavigationView)findViewById(R.id.navview);
+
+        navView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+
+                        boolean fragmentTransaction = false;
+                        Fragment fragment = null;
+
+                        switch (menuItem.getItemId()) {
+                            case R.id.menu_seccion_1:
+                                Intent inte = new Intent(MapsActivity.this, NuevaOfertaActivity.class);
+                                startActivity(inte);
+                                //fragment = new Fragment1();
+                               // fragmentTransaction = true;
+                                break;
+                            case R.id.menu_seccion_2:
+                                Intent inte2 = new Intent(MapsActivity.this, LugarConsultarActivity.class);
+                                startActivity(inte2);
+                                break;
+                            case R.id.menu_seccion_3:
+                                fragment = new Fragment1();
+                                fragmentTransaction = true;
+                                break;
+                            case R.id.menu_opcion_1:
+                                Log.i("NavigationView", "Pulsada opción 1");
+                                break;
+                            case R.id.menu_opcion_2:
+                                Log.i("NavigationView", "Pulsada opción 2");
+                                break;
+                        }
+
+                        if(fragmentTransaction) {
+                            getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.content_frame, fragment)
+                                    .commit();
+
+                            menuItem.setChecked(true);
+                            getSupportActionBar().setTitle(menuItem.getTitle());
+                        }
+
+                        drawerLayout.closeDrawers();
+
+                        return true;
+                    }
+                });
     }
 
 
@@ -245,6 +314,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
         }
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch(item.getItemId()) {
+            case android.R.id.home:
+                drawerLayout.openDrawer(GravityCompat.START);
+                return true;
+            //...
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 }

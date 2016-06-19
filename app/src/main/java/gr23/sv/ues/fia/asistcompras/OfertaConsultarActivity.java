@@ -29,6 +29,7 @@ import gr23.sv.ues.fia.asistcompras.Modelos.ControlDB;
 public class OfertaConsultarActivity extends AppCompatActivity implements SensorEventListener {
 
     private ListView lista;
+    List<Oferta> ofertaList;
     ControlDB helper;
     private static final float SHAKE_THRESHOLD = 1.1f;
     private static final int SHAKE_WAIT_TIME_MS = 250;
@@ -40,23 +41,23 @@ public class OfertaConsultarActivity extends AppCompatActivity implements Sensor
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_oferta_consultar);
-
+        helper = new ControlDB(this);
+        lista = (ListView) findViewById(R.id.ListView_listado);
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mSensorAcc = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         ArrayList<listaImagen> datos = new ArrayList<listaImagen>();
-        List<Oferta> ofertaList=new ArrayList<>();
+        helper.abrir();
         ofertaList=helper.consultarOferta();
-        for( int i = 0 ; i < ofertaList.size() ; i++ ){
-            Oferta oferta=new Oferta();
-            oferta=ofertaList.get(i);
+        helper.cerrar();
+        for(Oferta oferta : ofertaList){
             datos.add(new listaImagen(oferta.isFoto(),oferta.getNombre(),oferta.getDescripcion()));
         }
 
-       // datos.add(new listaImagen(R.drawable.image,"Oferta de All Star","todos los estilos a mitad de precio, por liquidacion de la tienda  "));
+
+        // datos.add(new listaImagen(R.drawable.image,"Oferta de All Star","todos los estilos a mitad de precio, por liquidacion de la tienda  "));
         //datos.add(new listaImagen(R.drawable.wii,"grandes descuentos para el Wii", "50% de descuento al comprar una consola al contado, INCREIBLEMENTE BARATUUUUS "));
         //datos.add(new listaImagen(R.drawable.guitarra,"Guitarras Electricas","¿QUIERES INICIAR TU PROPIA BANDA? Entonces debes aproveche estos super descuento en guitarras electricas en la tienda MEGADEATH SHOP "));
 
-        lista = (ListView) findViewById(R.id.ListView_listado);
         lista.setAdapter(new listaImagenAdapter(this, R.layout.oferta, datos){
             @Override
             public void onOferta(Object entrada, View view) {
@@ -70,7 +71,11 @@ public class OfertaConsultarActivity extends AppCompatActivity implements Sensor
                         texto_inferior_entrada.setText(((listaImagen) entrada).get_textoDebajo());
 
                     ImageView imagen_entrada = (ImageView) view.findViewById(R.id.imageView_imagen);
-                    //if (imagen_entrada != null)
+                    if (imagen_entrada != null){
+                        File photo = new File(Environment.getExternalStorageDirectory()+"/Image",
+                                ((listaImagen) entrada).get_idImagen());
+                        imagen_entrada.setImageURI(Uri.fromFile(photo));
+                    }
                     /*    File photo = new
                                 File(Environment.getExternalStorageDirectory(), );
                     file = Uri.fromFile(photo);

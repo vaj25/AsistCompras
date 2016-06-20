@@ -129,6 +129,7 @@ public class ControlDB {
         lgr.put("descripcion",oferta.getDescripcion());
         lgr.put("foto", oferta.isFoto());
         lgr.put("video", oferta.isVideo());
+        lgr.put("nombrelugar",oferta.getNombrelugar());
 
         contador = db.insert("oferta", null, lgr);
         if(contador == -1 || contador == 0)

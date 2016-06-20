@@ -41,14 +41,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "nombreLugar CHAR(30)," +
                     "constraint PK_OFERTA primary key (idoferta));");
             db.execSQL("CREATE TABLE lista (" +
-                    "idlista INTEGER NOT NULL," +
-                    "nombrelista VARCHAR(25)," +
-                    "descripcionlista VARCHAR(100)," +
-                    "constraint PK_LISTA primary key (idlista));");
+                    "idlista INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
+                    "nombrelista VARCHAR(25));");
             db.execSQL("CREATE TABLE listaproducto (" +
-                    "idlistaproducto INTEGER NOT NULL," +
-                    "descripcion VARCHAR(100)," +
-                    "constraint PK_LISTA primary key (idlistaproducto));");
+                    "idlistaproducto INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
+                    "idlista INTEGER," +
+                    "descripcion VARCHAR(100));");
             db.execSQL("CREATE TABLE detallearticulo (" +
                     "iddetallearticulo INTEGER NOT NULL," +
                     "cantidad INTEGER," +

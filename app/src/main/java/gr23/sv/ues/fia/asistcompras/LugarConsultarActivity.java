@@ -73,7 +73,7 @@ public class LugarConsultarActivity extends AppCompatActivity implements SensorE
         mSensorAcc = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
         helper.abrir();
-        //helper.llenarBD();
+        helper.llenarBD();
         listLugar = helper.consultarAllLugar();
         helper.cerrar();
 

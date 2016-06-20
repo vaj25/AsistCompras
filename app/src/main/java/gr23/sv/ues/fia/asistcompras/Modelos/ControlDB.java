@@ -8,11 +8,12 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 import gr23.sv.ues.fia.asistcompras.Entidades.Articulo;
-import gr23.sv.ues.fia.asistcompras.Entidades.DetalleArticulo;
+import gr23.sv.ues.fia.asistcompras.Entidades.ListaProducto;
+import gr23.sv.ues.fia.asistcompras.Entidades.detalleArticulo;
 import gr23.sv.ues.fia.asistcompras.Entidades.Lista;
 import gr23.sv.ues.fia.asistcompras.Entidades.Lugar;
 import gr23.sv.ues.fia.asistcompras.Entidades.Oferta;
-import gr23.sv.ues.fia.asistcompras.Entidades.UnidadMedida;
+//import gr23.sv.ues.fia.asistcompras.Entidades.UnidadMedida;
 
 /**
  * Created by FAMILY on 05/06/2016.
@@ -102,7 +103,7 @@ public class ControlDB {
         return regInsertados;
     }
 
-    public String insertar(DetalleArticulo detart){
+    public String insertar(detalleArticulo detart){
         String regInsertados="Registro Insertado Nº= ";
         long contador = 0;
         ContentValues lgr = new ContentValues();
@@ -144,6 +145,7 @@ public class ControlDB {
         }
         return regInsertados;
     }
+
     public List consultarOferta(){
         abrir();
        List<Oferta> ofertaList=new ArrayList<>();
@@ -161,13 +163,13 @@ public class ControlDB {
         db.close();
         return ofertaList;
     }
-    public String insertar(Lista lista){
+    public String insertarLista(Lista lista){
         String regInsertados="Registro Insertado Nº= ";
         long contador = 0;
         ContentValues lgr = new ContentValues();
-        lgr.put("idlista", lista.getIdLista());
+
         lgr.put("nombrelista", lista.getNombreLista());
-        lgr.put("descripcionlista", lista.getDescripcionLista());
+
         contador = db.insert("lista", null, lgr);
         if(contador == -1 || contador == 0)
         {
@@ -179,12 +181,146 @@ public class ControlDB {
         return regInsertados;
     }
 
+    public String eliminarLista(Lista lis){
+        String regAfectados="filas afectadas= ";
+        int contador=0;
+
+        contador+=db.delete("lista", "idlista='"+lis.getIdLista()+"'", null);
+        regAfectados+=contador;
+        return regAfectados;
+    }
+
+    public String eliminarListaProducto(int lisPro){
+        String regAfectados="Eliminado";
+        int contador=0;
+
+        if (verificarIntegridad(lisPro,2)) {
+            contador+=db.delete("listaproducto", "idlistaproducto='"+lisPro+"'", null);
+        }
+        regAfectados="Eliminado";
+        return regAfectados;
+    }
+
+    public List consultarLista(){
+        abrir();
+        List<Lista> li=new ArrayList<>();
+        Cursor cursor=db.rawQuery("SELECT * FROM lista ORDER BY idlista DESC",null);
+        while(cursor.moveToNext()){
+            Lista list = new Lista();
+            list.setIdLista(cursor.getInt(0));
+            list.setNombreLista(cursor.getString(1));
+
+
+            li.add(list);
+        }
+        cursor.close();
+        db.close();
+        return li;
+    }
+
+    public List consultarListaProductoId(int id){
+        abrir();
+        List<ListaProducto> ac=new ArrayList<>();
+        String[] nom={String.valueOf(id)};
+        String[] campos={"descripcion"};
+        Cursor cursor=db.query("listaproducto", campos, "idlista = ?", nom, null, null, null);
+        while(cursor.moveToNext()){
+            ListaProducto l=new ListaProducto();
+            l.setDescripcion(cursor.getString(0));
+
+            ac.add(l);
+
+        }
+        cursor.close();
+        db.close();
+        return ac;
+
+    }
+
+    public int extraerListaNombre(String nombreL){
+        abrir();
+        int ac=0;
+        String[] nom={nombreL};
+        String[] campos={"idlista"};
+        Cursor cursor=db.query("lista", campos, "nombrelista = ?", nom, null, null, null);
+        while(cursor.moveToNext()){
+            ac=cursor.getInt(0);
+
+        }
+        cursor.close();
+        db.close();
+        return ac;
+
+    }
+    public int extraerListaProductoNombre(String nombreL){
+        abrir();
+        int ac=0;
+        String[] nom={nombreL};
+        String[] campos={"idlistaproducto"};
+        Cursor cursor=db.query("listaproducto", campos, "descripcion = ?", nom, null, null, null);
+        while(cursor.moveToNext()){
+            ac=cursor.getInt(0);
+
+        }
+        cursor.close();
+        db.close();
+        return ac;
+
+    }
+
+
+    public List consultarListaProducto(){
+        abrir();
+        List<ListaProducto> li=new ArrayList<>();
+        Cursor cursor=db.rawQuery("SELECT * FROM listaproducto ORDER BY idlistaproducto DESC",null);
+        while(cursor.moveToNext()){
+            ListaProducto list = new ListaProducto();
+            list.setIdProductoLista(cursor.getInt(0));
+            list.setIdLista(cursor.getInt(1));
+            list.setDescripcion(cursor.getString(2));
+
+
+            li.add(list);
+        }
+        cursor.close();
+        db.close();
+        return li;
+    }
+
+    public int obtenerTotalIdLista(){
+        abrir();
+        int tota=0;
+        Cursor cursor=db.rawQuery("SELECT * FROM lista",null);
+        tota=cursor.getCount();
+        cursor.close();
+        db.close();
+        return tota;
+    }
+
+    public String actualizarListaProducto(int ac, String nuevo){
+        String[] id = {String.valueOf(ac)};
+
+        if(verificarIntegridad(ac, 2)){
+
+
+            ContentValues cv = new ContentValues();
+            cv.put("descripcion", nuevo);
+
+            db.update("listaproducto", cv, "idlistaproducto = ?", id);
+            return "Actualizado ";
+        }else{
+            return "Registro no existe";
+        }}
+
+
+
     public String insertarListaProducto(ListaProducto listpro){
-        String regInsertados="Registro Insertado Nº= ";
+        String regInsertados="";
         long contador = 0;
         ContentValues lgr = new ContentValues();
         lgr.put("idlistaproducto", listpro.getIdProductoLista());
         lgr.put("descripcion", listpro.getDescripcion());
+        lgr.put("idlista", listpro.getIdLista());
 
         contador = db.insert("listaproducto", null, lgr);
         if(contador == -1 || contador == 0)
@@ -192,10 +328,12 @@ public class ControlDB {
             regInsertados = "Error al Insertar el registro, Registro Duplicado. Verificar inserción";
         }
         else {
-            regInsertados = regInsertados+contador;
+            regInsertados="Agregado";
         }
         return regInsertados;
     }
+
+
 
 
     public List consultarAllDetalleArticulo(){
@@ -229,6 +367,34 @@ public class ControlDB {
 
     public boolean verificarIntegridad(Object dato, int relacion) throws SQLException {
         switch (relacion) {
+            case 1: {
+                //Verificar si existe Lugar en DetalleArticulo (Eliminar Lugar)
+                Lugar lugar = (Lugar) dato;
+                String[] id1 = {String.valueOf(lugar.getLatitud()), String.valueOf(lugar.getLongitud())};
+                abrir();
+                Cursor cursor1 = db.query("detallearticulo", null, "latitud = ? AND longitud = ?", id1, null, null, null);
+                if (cursor1.moveToFirst()) {
+                    //Se encontraron datos
+                    return true;
+                }
+                return false;
+            }
+
+            case 2:
+                //Verificar que exista ListaProducto
+                {
+                    int LiPro = (int)dato;
+                    String[] id = {String.valueOf(dato)};
+                    abrir();
+                    Cursor cursor = db.query("listaproducto", null, "idlistaproducto = ?", id, null, null, null);
+                    if(cursor.moveToFirst()){
+                        //Se encontro Alumno
+                        return true;
+                    }
+                    return false;
+
+
+                }
             default:
                 return false;
         }
@@ -251,8 +417,22 @@ public class ControlDB {
         final String[] VLdescripcion={"ofertas","rebajas","al dos por uno","grandes precios"};
         final String[] VLimage={"prueba1.jpg","prueba2.jpg","prueba3.jpg","prueba4.jpg"};
 
+        final Integer[] VLiId={1,2,3,4};
+        final String[] VLiNombreLista={"de compras","para la fiesta","cumpleaños","cena del jueves"};
+
+        final Integer[] VLPId={1,2,3,4,5,6,7,8,9,10,11};
+        final Integer[] VLPIdLista={1,1,1,1,2,3,3,4,4,4,2};
+        final String[] VLPdesc={"piñata","pastel","pan dej caja","arroz","carne","huezo","churros","mucha fruta","oferta de rinso","azucar","una pata"};
+
+
+
+
+
         abrir();
         db.execSQL("DELETE FROM oferta");
+        db.execSQL("DELETE FROM lista");
+        db.execSQL("DELETE FROM listaproducto");
+
 
         Lugar lugar = new Lugar();
         for(int i=0;i<4;i++){
@@ -262,6 +442,24 @@ public class ControlDB {
             lugar.setDescripcion(VLdescripcion[i]);
             lugar.setImage(VLimage[i]);
             insertar(lugar);
+        }
+
+        Lista lista = new Lista();
+        for(int i=0;i<4;i++){
+            lista.setIdLista(VLiId[i]);
+            lista.setNombreLista(VLiNombreLista[i]);
+
+            insertarLista(lista);
+
+        }
+
+        ListaProducto listaP = new ListaProducto();
+        for(int i=0;i<11;i++){
+            //listaP.setIdProductoLista(VLiId[i]);
+            listaP.setIdLista(VLPIdLista[i]);
+            listaP.setDescripcion(VLPdesc[i]);
+            insertarListaProducto(listaP);
+
         }
         cerrar();
         return "Guardo Correctamente";

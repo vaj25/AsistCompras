@@ -73,6 +73,7 @@ public class LugarInsertarActivity extends AppCompatActivity {
         setContentView(R.layout.activity_lugar_insertar);
 
         nombre = (TextInputLayout) findViewById(R.id.til_nombre);
+
         descripcion = (TextInputLayout) findViewById(R.id.til_descripcion);
         image = (ImageView) findViewById(R.id.mainimage);
         lvn = (ListView) findViewById(R.id.lVoiceNombre);

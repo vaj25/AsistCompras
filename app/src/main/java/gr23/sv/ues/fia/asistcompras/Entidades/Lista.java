@@ -1,12 +1,14 @@
 package gr23.sv.ues.fia.asistcompras.Entidades;
 
+import gr23.sv.ues.fia.asistcompras.Modelos.ControlDB;
+
 /**
  * Created by Moisés on 15/06/2016.
  */
 public class Lista {
     private int idLista;
     private String nombreLista;
-    private String descripcionLista;
+
 
     public Lista() {
     }
@@ -14,7 +16,7 @@ public class Lista {
     public Lista(int idLista, String nombreLista, String descripcionLista) {
         this.idLista = idLista;
         this.nombreLista = nombreLista;
-        this.descripcionLista = descripcionLista;
+
     }
 
     public int getIdLista() {
@@ -33,11 +35,10 @@ public class Lista {
         this.nombreLista = nombreLista;
     }
 
-    public String getDescripcionLista() {
-        return descripcionLista;
-    }
 
-    public void setDescripcionLista(String descripcionLista) {
-        this.descripcionLista = descripcionLista;
+    @Override
+    public String toString(){
+
+        return ""+nombreLista;
     }
 }

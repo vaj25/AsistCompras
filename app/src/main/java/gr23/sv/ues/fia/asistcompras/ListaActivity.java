@@ -76,67 +76,6 @@ public class ListaActivity extends AppCompatActivity {
             }
         });
 
-        //------------------------------------menu lateral-------------------------------------------------------
-
-        appbar = (Toolbar) findViewById(R.id.appbar);
-        setSupportActionBar(appbar);
-
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_nav_menu);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
-        navView = (NavigationView)findViewById(R.id.navview);
-
-        navView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
-
-                        boolean fragmentTransaction = false;
-                        Fragment fragment = null;
-
-                        switch (menuItem.getItemId()) {
-                            case R.id.menu_seccion_1:
-                                Intent inte = new Intent(ListaActivity.this, NuevaOfertaActivity.class);
-                                startActivity(inte);
-                                //fragment = new Fragment1();
-                                // fragmentTransaction = true;
-                                break;
-                            case R.id.menu_seccion_2:}
-                                Intent inte2 = new Intent(ListaActivity.this, OfertaConsultarActivity.class);
-                                startActivity(inte2);
-                                break;
-                            case R.id.menu_opcion_1:
-                                Intent inte4 = new Intent(ListaActivity.this, LugarInsertarActivity.class);
-                                startActivity(inte4);
-                                break;
-                            case R.id.menu_opcion_2:
-                                Intent inte5 = new Intent(ListaActivity.this, LugarConsultarActivity.class);
-                                startActivity(inte5);
-                                break;
-                            case R.id.menu_opcion_3:
-                                Intent inte6 = new Intent(ListaActivity.this, MapsActivity.class);
-                                startActivity(inte6);
-                                break;
-                        }
-
-                        if(fragmentTransaction) {
-                            getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.content_frame, fragment)
-                                    .commit();
-
-                            menuItem.setChecked(true);
-                            getSupportActionBar().setTitle(menuItem.getTitle());
-                        }
-
-                        drawerLayout.closeDrawers();
-
-                        return true;
-                    }
-                });
-
-
-        //----------------------------------fin menu lateral---------------------------------------
 
 
         }

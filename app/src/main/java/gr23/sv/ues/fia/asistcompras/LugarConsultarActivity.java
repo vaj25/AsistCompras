@@ -30,11 +30,11 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 import gr23.sv.ues.fia.asistcompras.Entidades.Image;
 import gr23.sv.ues.fia.asistcompras.Entidades.Lugar;
@@ -55,15 +55,15 @@ public class LugarConsultarActivity extends AppCompatActivity implements SensorE
     Sensor mSensorAcc;
     private long mShakeTime = 0;
     private ShareActionProvider myShareActionProvider;
-
-    //------- var menu lateral -------------
     private Toolbar appbar;
     private DrawerLayout drawerLayout;
     private NavigationView navView;
-    //--------------------fin var menu lateral------------------------
+    int seleccionado;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lugar_consultar);
         helper = new ControlDB(this);
@@ -164,11 +164,14 @@ public class LugarConsultarActivity extends AppCompatActivity implements SensorE
 
         //----------------------------------fin menu lateral---------------------------------------
         /*
+
         ArrayAdapter adaptador = new ArrayAdapter(this, android.R.layout.simple_list_item_1, listLugar);
         adaptador.setDropDownViewResource(android.R.layout.simple_list_item_1);
         listView.setAdapter(adaptador);
         registerForContextMenu(listView);
         */
+
+
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -178,12 +181,31 @@ public class LugarConsultarActivity extends AppCompatActivity implements SensorE
         //Inicializamos nuestro ShareActionProvider
         myShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareOpt);
         //Creamos nuestro sharer Intent
+        Iterator iterador = listLugar.listIterator();
+        int count = 0;
+        String imagen="";
+        while (iterador.hasNext()) {
+            Lugar lugar = (Lugar) iterador.next();
+            if (count == seleccionado) {
+                imagen=lugar.getImage();
+            }
+            count++;
+        }
+        listaImagen list=new listaImagen(imagen,"","");
+        File photo = new File(Environment.getExternalStorageDirectory()+"/Image",list.get_idImagen());
+
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setType("text/plain");
-        i.putExtra(Intent.EXTRA_TEXT, "mensaje de prueba");
+        i.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(photo));
         myShareActionProvider.setShareIntent(i);
         return true;
+
     }
+
+    public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+        seleccionado=position;
+    }
+
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
@@ -196,6 +218,7 @@ public class LugarConsultarActivity extends AppCompatActivity implements SensorE
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         Iterator iterador = listLugar.listIterator();
+
         int count = 0;
         double latitud=0.0;
         double longitud=0.0;
@@ -235,6 +258,7 @@ public class LugarConsultarActivity extends AppCompatActivity implements SensorE
                 return super.onContextItemSelected(item);
         }
     }
+
     public void returnHome() {
         Intent home_intent = new Intent(getApplicationContext(),LugarConsultarActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(home_intent);

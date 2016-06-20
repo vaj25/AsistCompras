@@ -44,7 +44,7 @@ public class LoginActivity extends Activity {
 
             @Override
             public void onSuccess(LoginResult login_result) {
-                Intent inte = new Intent(LoginActivity.this, LugarConsultarActivity.class);
+                Intent inte = new Intent(LoginActivity.this, MapsActivity.class);
                 startActivity(inte);
                 Toast.makeText(LoginActivity.this,"Ha iniciado sesión con exito",Toast.LENGTH_SHORT).show();
             }

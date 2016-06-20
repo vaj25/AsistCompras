@@ -11,21 +11,31 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.speech.RecognizerIntent;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Iterator;
+import java.util.List;
 
 import gr23.sv.ues.fia.asistcompras.Entidades.Lugar;
 import gr23.sv.ues.fia.asistcompras.Entidades.Oferta;
@@ -39,6 +49,7 @@ public class NuevaOfertaActivity extends AppCompatActivity {
     ListView lvn;
     ListView lvd;
     ArrayAdapter<String> adaptador;
+    List<String> listalugar;
     static final int checkNombre = 1111;
     static final int checkDescripcion = 1112;
     final int FOTOGRAFIA = 654;
@@ -46,13 +57,28 @@ public class NuevaOfertaActivity extends AppCompatActivity {
    // private double latitud;
     //private double longitud;
     private String fotoFile;
+    Spinner slugar;
     private ControlDB helper;
+
+
+//------- var menu lateral -------------
+    private Toolbar appbar;
+    private DrawerLayout drawerLayout;
+    private NavigationView navView;
+    //--------------------fin var menu lateral------------------------
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nueva_oferta);
-        getSupportActionBar().setTitle("Nueva Oferta");
+        slugar= (Spinner) findViewById(R.id.spnLugar);
+        listalugar = new ArrayList<>();
+        listalugar=helper.consultarAllLugar();
+        ArrayAdapter<String> adaptadorLugar =new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,listalugar);
+        adaptadorLugar.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        slugar.setAdapter(adaptadorLugar);
+
+//        getSupportActionBar().setTitle("Nueva Oferta");
 
         nombreOferta = (TextInputLayout) findViewById(R.id.til_nombre_oferta);
         descripcionOferta = (TextInputLayout) findViewById(R.id.til_descripcion_oferta);
@@ -137,6 +163,73 @@ public class NuevaOfertaActivity extends AppCompatActivity {
                 file = Uri.parse(savedInstanceState.getString("Foto"));
             }
         }
+
+
+
+
+
+
+        //------------------------------------menu lateral-------------------------------------------------------
+
+        appbar = (Toolbar) findViewById(R.id.appbar);
+        setSupportActionBar(appbar);
+
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_nav_menu);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        navView = (NavigationView)findViewById(R.id.navview);
+
+        navView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+
+                        boolean fragmentTransaction = false;
+                        Fragment fragment = null;
+
+                        switch (menuItem.getItemId()) {
+                            case R.id.menu_seccion_1:
+                                Intent inte = new Intent(NuevaOfertaActivity.this, NuevaOfertaActivity.class);
+                                startActivity(inte);
+                                //fragment = new Fragment1();
+                                // fragmentTransaction = true;
+                                break;
+                            case R.id.menu_seccion_2:
+                                Intent inte2 = new Intent(NuevaOfertaActivity.this, OfertaConsultarActivity.class);
+                                startActivity(inte2);
+                                break;
+                            case R.id.menu_opcion_1:
+                                Intent inte4 = new Intent(NuevaOfertaActivity.this, LugarInsertarActivity.class);
+                                startActivity(inte4);
+                                break;
+                            case R.id.menu_opcion_2:
+                                Intent inte5 = new Intent(NuevaOfertaActivity.this, LugarConsultarActivity.class);
+                                startActivity(inte5);
+                                break;
+                            case R.id.menu_opcion_3:
+                                Intent inte6 = new Intent(NuevaOfertaActivity.this, MapsActivity.class);
+                                startActivity(inte6);
+                                break;
+                        }
+
+                        if(fragmentTransaction) {
+                            getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.content_frame, fragment)
+                                    .commit();
+
+                            menuItem.setChecked(true);
+                            getSupportActionBar().setTitle(menuItem.getTitle());
+                        }
+
+                        drawerLayout.closeDrawers();
+
+                        return true;
+                    }
+                });
+
+
+        //----------------------------------fin menu lateral---------------------------------------
     }/////////////////fin onCreate
 
     public void onSaveInstanceState(Bundle bundle) {
@@ -148,12 +241,29 @@ public class NuevaOfertaActivity extends AppCompatActivity {
 
     private void tomarFoto() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        fotoFile = String.valueOf(Calendar.getInstance().getTimeInMillis()) + ".jpg";
-        File photo = new
-                File(Environment.getExternalStorageDirectory(), fotoFile);
+        /*
+         * Crea una imagen en la carpeta Image
+         */
+        fotoFile = String.valueOf(Calendar.getInstance().getTimeInMillis())+".jpg";
+        String file_path = Environment.getExternalStorageDirectory()+"/Image";
+
+        //verifica la existencia de la carpeta
+        File dir = new File(file_path);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+
+        File photo = new File(Environment.getExternalStorageDirectory()+"/Image" ,fotoFile);
         file = Uri.fromFile(photo);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, file);
         startActivityForResult(intent, FOTOGRAFIA);
+
+        /*
+        * codigo para mostrar una imagen en el imageView
+        * File photo = new  File(Environment.getExternalStorageDirectory()+"/Imagen" ,"imagen.jpg");
+        * file = Uri.fromFile(photo);
+        * image.setImageURI(file);
+        * */
     }
 
     @Override
@@ -196,18 +306,45 @@ public class NuevaOfertaActivity extends AppCompatActivity {
     }
 
     private void ingresar() {
+        int positionLugar= slugar.getSelectedItemPosition();
+        Iterator iteradorLugar = listalugar.listIterator();
+        int countlugar=0;
+        String nombrelugar="";
+        while( iteradorLugar.hasNext() ) {
+            Lugar lugar = (Lugar) iteradorLugar.next();
+            if(countlugar==positionLugar){
+                nombrelugar=lugar.getNombre();
+            }
+            countlugar++;
+        }
         String regInsertados;
+        int id=helper.contarRegistros("oferta","idoferta");
         String nombreOf = nombreOferta.getEditText().getText().toString();
         String descripcionOf = descripcionOferta.getEditText().getText().toString();
-        /// solo para q no de error
-        int idOferta = 1;
-        Oferta oferta = new Oferta(idOferta, nombreOf, descripcionOf, fotoFile, "");
+
+        Oferta oferta = new Oferta(id, nombreOf, descripcionOf, fotoFile, "",nombrelugar);
         helper.abrir();
         regInsertados = helper.insertar(oferta);
         helper.cerrar();
 
         Toast.makeText(this, regInsertados, Toast.LENGTH_SHORT).show();
     }
+//-------------------------------parte de menu lateral--------------------------------
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch(item.getItemId()) {
+            case android.R.id.home:
+                drawerLayout.openDrawer(GravityCompat.START);
+                return true;
+            //...
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+//----------------------------------fin parte de menu lateral--------------------------------------------
+
 }
 
     /*LocationListener locationListener = new LocationListener() {

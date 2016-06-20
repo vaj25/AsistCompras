@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -14,9 +15,15 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
+import gr23.sv.ues.fia.asistcompras.Entidades.Image;
 import gr23.sv.ues.fia.asistcompras.Entidades.Lugar;
 import gr23.sv.ues.fia.asistcompras.Modelos.ControlDB;
 
@@ -52,6 +60,12 @@ public class LugarInsertarActivity extends AppCompatActivity {
     private double longitud;
     private String fotoFile;
     private ControlDB helper;
+
+    //------- var menu lateral -------------
+    private Toolbar appbar;
+    private DrawerLayout drawerLayout;
+    private NavigationView navView;
+    //--------------------fin var menu lateral------------------------
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,6 +156,69 @@ public class LugarInsertarActivity extends AppCompatActivity {
                 file = Uri.parse(savedInstanceState.getString("Foto"));
             }
         }
+
+
+            //------------------------------------menu lateral-------------------------------------------------------
+
+            appbar = (Toolbar) findViewById(R.id.appbar);
+            setSupportActionBar(appbar);
+
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_nav_menu);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+            drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+            navView = (NavigationView)findViewById(R.id.navview);
+
+            navView.setNavigationItemSelectedListener(
+                    new NavigationView.OnNavigationItemSelectedListener() {
+                        @Override
+                        public boolean onNavigationItemSelected(MenuItem menuItem) {
+
+                            boolean fragmentTransaction = false;
+                            Fragment fragment = null;
+
+                            switch (menuItem.getItemId()) {
+                                case R.id.menu_seccion_1:
+                                    Intent inte = new Intent(LugarInsertarActivity.this, NuevaOfertaActivity.class);
+                                    startActivity(inte);
+                                    //fragment = new Fragment1();
+                                    // fragmentTransaction = true;
+                                    break;
+                                case R.id.menu_seccion_2:
+                                    Intent inte2 = new Intent(LugarInsertarActivity.this, OfertaConsultarActivity.class);
+                                    startActivity(inte2);
+                                    break;
+                                case R.id.menu_opcion_1:
+                                    Intent inte4 = new Intent(LugarInsertarActivity.this, LugarInsertarActivity.class);
+                                    startActivity(inte4);
+                                    break;
+                                case R.id.menu_opcion_2:
+                                    Intent inte5 = new Intent(LugarInsertarActivity.this, LugarConsultarActivity.class);
+                                    startActivity(inte5);
+                                    break;
+                                case R.id.menu_opcion_3:
+                                    Intent inte6 = new Intent(LugarInsertarActivity.this, MapsActivity.class);
+                                    startActivity(inte6);
+                                    break;
+                            }
+
+                            if(fragmentTransaction) {
+                                getSupportFragmentManager().beginTransaction()
+                                        .replace(R.id.content_frame, fragment)
+                                        .commit();
+
+                                menuItem.setChecked(true);
+                                getSupportActionBar().setTitle(menuItem.getTitle());
+                            }
+
+                            drawerLayout.closeDrawers();
+
+                            return true;
+                        }
+                    });
+
+
+            //----------------------------------fin menu lateral---------------------------------------
     }
 
 
@@ -154,10 +231,21 @@ public class LugarInsertarActivity extends AppCompatActivity {
 
     private void tomarFoto() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        /*
+         * Crea una imagen en la carpeta Image
+         */
         fotoFile = String.valueOf(Calendar.getInstance().getTimeInMillis())+".jpg";
-        File photo = new
-                File(Environment.getExternalStorageDirectory(),fotoFile);
+        String file_path = Environment.getExternalStorageDirectory()+"/Image";
+
+        //verifica la existencia de la carpeta
+        File dir = new File(file_path);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+
+        File photo = new File(Environment.getExternalStorageDirectory()+"/Image" ,fotoFile);
         file = Uri.fromFile(photo);
+
         intent.putExtra(MediaStore.EXTRA_OUTPUT, file);
         startActivityForResult(intent, FOTOGRAFIA);
     }
@@ -179,9 +267,15 @@ public class LugarInsertarActivity extends AppCompatActivity {
                 Intent inte2= new Intent(LugarInsertarActivity.this,OfertaConsultarActivity.class);
                 startActivity(inte2);
                 return true;
+            case android.R.id.home:
+                drawerLayout.openDrawer(GravityCompat.START);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+
+
+
 
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -295,4 +389,5 @@ public class LugarInsertarActivity extends AppCompatActivity {
         locationManager.requestLocationUpdates(
                 LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
     }
+
 }

@@ -9,16 +9,18 @@ public class Oferta {
     private String descripcion;
     private String foto;
     private String video;
+    private String nombrelugar;
 
-    public Oferta() {
-    }
-
-    public Oferta(int idOferta,String nombre,String descripcion, String foto, String video) {
+    public Oferta(int idOferta, String nombre, String descripcion, String foto, String video, String nombrelugar) {
         this.idOferta = idOferta;
-        this.nombre=nombre;
-        this.descripcion=descripcion;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
         this.foto = foto;
         this.video = video;
+        this.nombrelugar = nombrelugar;
+    }
+
+    public Oferta() {
     }
 
     public int getIdOferta() {
@@ -27,6 +29,22 @@ public class Oferta {
 
     public void setIdOferta(int idOferta) {
         this.idOferta = idOferta;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     public String isFoto() {
@@ -45,13 +63,11 @@ public class Oferta {
         this.video = video;
     }
 
-    public void setNombre(String nombre){
-        this.nombre=nombre;
+    public String getNombrelugar() {
+        return nombrelugar;
     }
 
-    public String getNombre(){return nombre;}
-    public void setDescripcion(String descripcion){
-        this.descripcion=descripcion;
+    public void setNombrelugar(String nombrelugar) {
+        this.nombrelugar = nombrelugar;
     }
-    public String getDescripcion(){return  descripcion; }
 }

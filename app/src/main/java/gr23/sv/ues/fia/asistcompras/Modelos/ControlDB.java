@@ -132,6 +132,7 @@ public class ControlDB {
         lgr.put("descripcion",oferta.getDescripcion());
         lgr.put("foto", oferta.isFoto());
         lgr.put("video", oferta.isVideo());
+        lgr.put("nombrelugar",oferta.getNombrelugar());
 
         contador = db.insert("oferta", null, lgr);
         if(contador == -1 || contador == 0)
@@ -142,6 +143,23 @@ public class ControlDB {
             regInsertados = regInsertados+contador;
         }
         return regInsertados;
+    }
+    public List consultarOferta(){
+        abrir();
+       List<Oferta> ofertaList=new ArrayList<>();
+        Cursor cur = db.rawQuery("select * from oferta",null );
+        while(cur.moveToNext()){
+            Oferta oferta=new Oferta();
+            oferta.setIdOferta(cur.getInt(0));
+            oferta.setNombre(cur.getString(1));
+            oferta.setDescripcion(cur.getString(2));
+            oferta.setFoto(cur.getString(3));
+            oferta.setVideo(cur.getString(4));
+            ofertaList.add(oferta);
+        }
+        cur.close();
+        db.close();
+        return ofertaList;
     }
     public String insertar(Lista lista){
         String regInsertados="Registro Insertado Nº= ";
@@ -203,9 +221,6 @@ public class ControlDB {
         cv.put("latitud", String.valueOf(0.0));
         cv.put("longitud", String.valueOf(0.0));
         int contador=0;
-        if (verificarIntegridad(lugar,1)) {
-            contador+=db.update("detallearticulo", cv, "latitud = ? AND longitud = ?", id);
-        }
         String where="latitud='"+lugar.getLatitud()+"'";
         where=where+" AND longitud='"+lugar.getLongitud()+"'";
         contador+=db.delete("lugar", where, null);
@@ -214,22 +229,21 @@ public class ControlDB {
 
     public boolean verificarIntegridad(Object dato, int relacion) throws SQLException {
         switch (relacion) {
-            case 1: {
-                //Verificar si existe Lugar en DetalleArticulo (Eliminar Lugar)
-                Lugar lugar = (Lugar) dato;
-                String[] id1 = {String.valueOf(lugar.getLatitud()), String.valueOf(lugar.getLongitud())};
-                abrir();
-                Cursor cursor1 = db.query("detallearticulo", null, "latitud = ? AND longitud = ?", id1, null, null, null);
-                if (cursor1.moveToFirst()) {
-                    //Se encontraron datos
-                    return true;
-                }
-                return false;
-            }
             default:
                 return false;
         }
 }
+    //by Moisés Herrera
+    public int contarRegistros(String tabla,String id) {
+        Integer aux=0;
+        String[] campos = new String[]{id};
+        abrir();
+        int contador=0;
+        Cursor c = db.query(tabla, campos, null, null, null, null,null);
+        c.moveToLast();
+        aux=c.getInt(0)+1;
+        return aux;
+    }
     public String llenarBD(){
         final double [] VLlatitud={6596.3,785451.3,4545.6,784.3};
         final double[] VLlongitud={7845.6,4512.3,7889.2,452.3};

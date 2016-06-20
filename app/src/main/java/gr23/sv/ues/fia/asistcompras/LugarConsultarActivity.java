@@ -107,16 +107,6 @@ public class LugarConsultarActivity extends AppCompatActivity implements SensorE
             }
         });
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(AdapterView<?> adapter, View v, int position,long arg3)
-            {
-                seleccionado=position;
-                // assuming string and if you want to get the value on click of list item
-                // do what you intend to do on click of listview row
-            }
-        });
 
 
         //------------------------------------menu lateral-------------------------------------------------------
@@ -157,6 +147,10 @@ public class LugarConsultarActivity extends AppCompatActivity implements SensorE
                                 Intent inte5 = new Intent(LugarConsultarActivity.this, LugarConsultarActivity.class);
                                 startActivity(inte5);
                                 break;
+                            case R.id.menu_opcion_3:
+                                Intent inte6 = new Intent(LugarConsultarActivity.this, MapsActivity.class);
+                                startActivity(inte6);
+                                break;
                         }
 
                         if(fragmentTransaction) {
@@ -183,6 +177,17 @@ public class LugarConsultarActivity extends AppCompatActivity implements SensorE
         listView.setAdapter(adaptador);
         */
 
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> adapter, View v, int position,long arg3)
+            {
+                seleccionado=position;
+                // assuming string and if you want to get the value on click of list item
+                // do what you intend to do on click of listview row
+            }
+        });
 
     }
     @Override

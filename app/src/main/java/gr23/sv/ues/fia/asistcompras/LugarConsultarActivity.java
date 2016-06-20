@@ -100,8 +100,21 @@ public class LugarConsultarActivity extends AppCompatActivity implements SensorE
                         File photo = new File(Environment.getExternalStorageDirectory()+"/Image",
                                 ((listaImagen) entrada).get_idImagen());
                         imagen_entrada.setImageURI(Uri.fromFile(photo));
+
                     }
                 }
+                registerForContextMenu(listView);
+            }
+        });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> adapter, View v, int position,long arg3)
+            {
+                seleccionado=position;
+                // assuming string and if you want to get the value on click of list item
+                // do what you intend to do on click of listview row
             }
         });
 
@@ -168,7 +181,6 @@ public class LugarConsultarActivity extends AppCompatActivity implements SensorE
         ArrayAdapter adaptador = new ArrayAdapter(this, android.R.layout.simple_list_item_1, listLugar);
         adaptador.setDropDownViewResource(android.R.layout.simple_list_item_1);
         listView.setAdapter(adaptador);
-        registerForContextMenu(listView);
         */
 
 
@@ -202,11 +214,6 @@ public class LugarConsultarActivity extends AppCompatActivity implements SensorE
 
     }
 
-    public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-        seleccionado=position;
-    }
-
-
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
@@ -218,7 +225,6 @@ public class LugarConsultarActivity extends AppCompatActivity implements SensorE
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         Iterator iterador = listLugar.listIterator();
-
         int count = 0;
         double latitud=0.0;
         double longitud=0.0;

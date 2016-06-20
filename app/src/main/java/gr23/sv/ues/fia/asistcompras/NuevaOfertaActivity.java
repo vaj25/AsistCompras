@@ -28,11 +28,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Iterator;
+import java.util.List;
 
 import gr23.sv.ues.fia.asistcompras.Entidades.Lugar;
 import gr23.sv.ues.fia.asistcompras.Entidades.Oferta;
@@ -46,6 +49,7 @@ public class NuevaOfertaActivity extends AppCompatActivity {
     ListView lvn;
     ListView lvd;
     ArrayAdapter<String> adaptador;
+    List<String> listalugar;
     static final int checkNombre = 1111;
     static final int checkDescripcion = 1112;
     final int FOTOGRAFIA = 654;
@@ -53,6 +57,7 @@ public class NuevaOfertaActivity extends AppCompatActivity {
    // private double latitud;
     //private double longitud;
     private String fotoFile;
+    Spinner slugar;
     private ControlDB helper;
 
 
@@ -66,6 +71,13 @@ public class NuevaOfertaActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nueva_oferta);
+        slugar= (Spinner) findViewById(R.id.spnLugar);
+        listalugar = new ArrayList<>();
+        listalugar=helper.consultarAllLugar();
+        ArrayAdapter<String> adaptadorLugar =new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,listalugar);
+        adaptadorLugar.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        slugar.setAdapter(adaptadorLugar);
+
 //        getSupportActionBar().setTitle("Nueva Oferta");
 
         nombreOferta = (TextInputLayout) findViewById(R.id.til_nombre_oferta);
@@ -239,7 +251,6 @@ public class NuevaOfertaActivity extends AppCompatActivity {
 
         File photo = new File(Environment.getExternalStorageDirectory()+"/Image" ,fotoFile);
         file = Uri.fromFile(photo);
-
         intent.putExtra(MediaStore.EXTRA_OUTPUT, file);
         startActivityForResult(intent, FOTOGRAFIA);
 
@@ -291,12 +302,23 @@ public class NuevaOfertaActivity extends AppCompatActivity {
     }
 
     private void ingresar() {
+        int positionLugar= slugar.getSelectedItemPosition();
+        Iterator iteradorLugar = listalugar.listIterator();
+        int countlugar=0;
+        String nombrelugar="";
+        while( iteradorLugar.hasNext() ) {
+            Lugar lugar = (Lugar) iteradorLugar.next();
+            if(countlugar==positionLugar){
+                nombrelugar=lugar.getNombre();
+            }
+            countlugar++;
+        }
         String regInsertados;
         int id=helper.contarRegistros("oferta","idoferta");
         String nombreOf = nombreOferta.getEditText().getText().toString();
         String descripcionOf = descripcionOferta.getEditText().getText().toString();
 
-        Oferta oferta = new Oferta(id, nombreOf, descripcionOf, fotoFile, "");
+        Oferta oferta = new Oferta(id, nombreOf, descripcionOf, fotoFile, "",nombrelugar);
         helper.abrir();
         regInsertados = helper.insertar(oferta);
         helper.cerrar();

@@ -9,16 +9,18 @@ public class Oferta {
     private String descripcion;
     private String foto;
     private String video;
+    private String nombreLugar;
 
     public Oferta() {
     }
 
-    public Oferta(int idOferta,String nombre,String descripcion, String foto, String video) {
+    public Oferta(int idOferta,String nombre,String descripcion, String foto, String video, String nombreLugar) {
         this.idOferta = idOferta;
         this.nombre=nombre;
         this.descripcion=descripcion;
         this.foto = foto;
         this.video = video;
+        this.nombreLugar=nombreLugar;
     }
 
     public int getIdOferta() {
@@ -54,4 +56,12 @@ public class Oferta {
         this.descripcion=descripcion;
     }
     public String getDescripcion(){return  descripcion; }
+
+    public void setNombreLugar(String nombre){
+        this.nombreLugar=nombre;
+    }
+    public String getNombreLugar(){
+        return nombreLugar;
+
+    }
 }

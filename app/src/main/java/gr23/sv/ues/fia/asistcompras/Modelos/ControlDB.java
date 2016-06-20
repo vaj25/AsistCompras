@@ -20,7 +20,7 @@ import gr23.sv.ues.fia.asistcompras.Entidades.Oferta;
 public class ControlDB {
 
     private final String[] camposLugar = {"latitud", "longitud", "nombre", "descripcion", "imagen"};
-    private final String[] camposOferta={"idOferta", "nombre","descripcion","foto","video"};
+    private final String[] camposOferta={"idoferta", "nombre","descripcion","foto","video","nombreLugar"};
     private final Context context;
     private DatabaseHelper DBHelper;
     private SQLiteDatabase db;
@@ -129,7 +129,7 @@ public class ControlDB {
         lgr.put("descripcion",oferta.getDescripcion());
         lgr.put("foto", oferta.isFoto());
         lgr.put("video", oferta.isVideo());
-
+        lgr.put("nombreLugar",oferta.getNombreLugar());
         contador = db.insert("oferta", null, lgr);
         if(contador == -1 || contador == 0)
         {
@@ -151,6 +151,7 @@ public class ControlDB {
             oferta.setDescripcion(cur.getString(2));
             oferta.setFoto(cur.getString(3));
             oferta.setVideo(cur.getString(4));
+            oferta.setNombreLugar(cur.getString(5));
             ofertaList.add(oferta);
         }
         cur.close();

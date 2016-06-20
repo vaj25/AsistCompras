@@ -196,6 +196,10 @@ public class LugarInsertarActivity extends AppCompatActivity {
                                     Intent inte5 = new Intent(LugarInsertarActivity.this, LugarConsultarActivity.class);
                                     startActivity(inte5);
                                     break;
+                                case R.id.menu_opcion_3:
+                                    Intent inte6 = new Intent(LugarInsertarActivity.this, MapsActivity.class);
+                                    startActivity(inte6);
+                                    break;
                             }
 
                             if(fragmentTransaction) {

@@ -115,6 +115,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 Intent inte5 = new Intent(MapsActivity.this, LugarConsultarActivity.class);
                                 startActivity(inte5);
                                 break;
+                            case R.id.menu_opcion_3:
+                                Intent inte6 = new Intent(MapsActivity.this, MapsActivity.class);
+                                startActivity(inte6);
+                                break;
                         }
 
                         if(fragmentTransaction) {

@@ -101,21 +101,19 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 Intent inte = new Intent(MapsActivity.this, NuevaOfertaActivity.class);
                                 startActivity(inte);
                                 //fragment = new Fragment1();
-                               // fragmentTransaction = true;
+                                // fragmentTransaction = true;
                                 break;
                             case R.id.menu_seccion_2:
-                                Intent inte2 = new Intent(MapsActivity.this, LugarConsultarActivity.class);
+                                Intent inte2 = new Intent(MapsActivity.this, OfertaConsultarActivity.class);
                                 startActivity(inte2);
                                 break;
-                            case R.id.menu_seccion_3:
-                                fragment = new Fragment1();
-                                fragmentTransaction = true;
-                                break;
                             case R.id.menu_opcion_1:
-                                Log.i("NavigationView", "Pulsada opción 1");
+                                Intent inte4 = new Intent(MapsActivity.this, LugarInsertarActivity.class);
+                                startActivity(inte4);
                                 break;
                             case R.id.menu_opcion_2:
-                                Log.i("NavigationView", "Pulsada opción 2");
+                                Intent inte5 = new Intent(MapsActivity.this, LugarConsultarActivity.class);
+                                startActivity(inte5);
                                 break;
                         }
 

@@ -8,25 +8,22 @@
         <item
             android:id="@+id/menu_seccion_2"
             android:icon="@drawable/ic_menu"
-            android:title="Consultar Lugar"/>
-        <item
-            android:id="@+id/menu_seccion_3"
-            android:icon="@drawable/ic_menu"
-            android:title="seccion_3"/>
+            android:title="Consultar Oferta"/>
+
     </group>
 
     <item
         android:id="@+id/navigation_subheader"
-        android:title="otras_opciones">
+        android:title="Lugares">
         <menu>
             <item
                 android:id="@+id/menu_opcion_1"
                 android:icon="@drawable/ic_menu"
-                android:title="opcion_1"/>
+                android:title="Ingresar Lugar"/>
             <item
                 android:id="@+id/menu_opcion_2"
                 android:icon="@drawable/ic_menu"
-                android:title="opcion_2"/>
+                android:title="Consultar Lugar"/>
         </menu>
     </item>
 </menu>

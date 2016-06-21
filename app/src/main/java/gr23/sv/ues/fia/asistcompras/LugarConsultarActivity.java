@@ -30,6 +30,11 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -59,6 +64,11 @@ public class LugarConsultarActivity extends AppCompatActivity implements SensorE
     private DrawerLayout drawerLayout;
     private NavigationView navView;
     int seleccionado;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
 
     @Override
@@ -150,6 +160,10 @@ public class LugarConsultarActivity extends AppCompatActivity implements SensorE
                             case R.id.menu_opcion_3:
                                 Intent inte6 = new Intent(LugarConsultarActivity.this, MapsActivity.class);
                                 startActivity(inte6);
+                                break;
+                            case R.id.menu_opcion_4:
+                                Intent inte7 = new Intent(LugarConsultarActivity.this, ListaActivity.class);
+                                startActivity(inte7);
                                 break;
                         }
 
@@ -333,6 +347,46 @@ public class LugarConsultarActivity extends AppCompatActivity implements SensorE
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "LugarConsultar Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://gr23.sv.ues.fia.asistcompras/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client, viewAction);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "LugarConsultar Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://gr23.sv.ues.fia.asistcompras/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client, viewAction);
+        client.disconnect();
     }
 
 //----------------------------------fin parte de menu lateral--------------------------------------------

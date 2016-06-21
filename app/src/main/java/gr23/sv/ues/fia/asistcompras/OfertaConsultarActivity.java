@@ -156,6 +156,10 @@ public class OfertaConsultarActivity extends AppCompatActivity implements Sensor
                                 Intent inte6 = new Intent(OfertaConsultarActivity.this, MapsActivity.class);
                                 startActivity(inte6);
                                 break;
+                            case R.id.menu_opcion_4:
+                                Intent inte7 = new Intent(OfertaConsultarActivity.this, ListaActivity.class);
+                                startActivity(inte7);
+                                break;
                         }
 
                         if(fragmentTransaction) {

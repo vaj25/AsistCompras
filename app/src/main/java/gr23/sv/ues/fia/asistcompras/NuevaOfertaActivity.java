@@ -71,12 +71,12 @@ public class NuevaOfertaActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nueva_oferta);
-        slugar= (Spinner) findViewById(R.id.spnLugar);
-        listalugar = new ArrayList<>();
-        listalugar=helper.consultarAllLugar();
-        ArrayAdapter<String> adaptadorLugar =new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,listalugar);
-        adaptadorLugar.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        slugar.setAdapter(adaptadorLugar);
+       // slugar= (Spinner) findViewById(R.id.spnLugar);
+        //listalugar = new ArrayList<>();
+        //listalugar=helper.consultarAllLugar();
+       // ArrayAdapter<String> adaptadorLugar =new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,listalugar);
+       // adaptadorLugar.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+       // slugar.setAdapter(adaptadorLugar);
 
 //        getSupportActionBar().setTitle("Nueva Oferta");
 
@@ -211,6 +211,10 @@ public class NuevaOfertaActivity extends AppCompatActivity {
                                 Intent inte6 = new Intent(NuevaOfertaActivity.this, MapsActivity.class);
                                 startActivity(inte6);
                                 break;
+                            case R.id.menu_opcion_4:
+                                Intent inte7 = new Intent(NuevaOfertaActivity.this, ListaActivity.class);
+                                startActivity(inte7);
+                                break;
                         }
 
                         if(fragmentTransaction) {
@@ -255,6 +259,7 @@ public class NuevaOfertaActivity extends AppCompatActivity {
 
         File photo = new File(Environment.getExternalStorageDirectory()+"/Image" ,fotoFile);
         file = Uri.fromFile(photo);
+
         intent.putExtra(MediaStore.EXTRA_OUTPUT, file);
         startActivityForResult(intent, FOTOGRAFIA);
 

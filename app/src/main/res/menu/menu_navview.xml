@@ -28,6 +28,10 @@
                 android:id="@+id/menu_opcion_3"
                 android:icon="@drawable/ic_menu"
                 android:title="Mapa"/>
+            <item
+                android:id="@+id/menu_opcion_4"
+                android:icon="@drawable/ic_menu"
+                android:title="Lista"/>
         </menu>
     </item>
 </menu>

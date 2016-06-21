@@ -5,7 +5,13 @@ import java.util.List;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -28,6 +34,13 @@ public class ListaProductoActivity extends AppCompatActivity {
     ListaProducto listPro;
     ControlDB helper;
     EditText editAgregarLP;
+
+
+    //------- var menu lateral -------------
+    private Toolbar appbar;
+    private DrawerLayout drawerLayout;
+    private NavigationView navView;
+    //--------------------fin var menu lateral------------------------
 
 
     int total=0;
@@ -80,6 +93,73 @@ public class ListaProductoActivity extends AppCompatActivity {
                 startActivity(modify_intent);
             }
         });
+
+
+        //------------------------------------menu lateral-------------------------------------------------------
+
+        appbar = (Toolbar) findViewById(R.id.appbar);
+        setSupportActionBar(appbar);
+
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_nav_menu);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        navView = (NavigationView)findViewById(R.id.navview);
+
+        navView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+
+                        boolean fragmentTransaction = false;
+                        Fragment fragment = null;
+
+                        switch (menuItem.getItemId()) {
+                            case R.id.menu_seccion_1:
+                                Intent inte = new Intent(ListaProductoActivity.this, NuevaOfertaActivity.class);
+                                startActivity(inte);
+                                //fragment = new Fragment1();
+                                // fragmentTransaction = true;
+                                break;
+                            case R.id.menu_seccion_2:
+                                Intent inte2 = new Intent(ListaProductoActivity.this, OfertaConsultarActivity.class);
+                                startActivity(inte2);
+                                break;
+                            case R.id.menu_opcion_1:
+                                Intent inte4 = new Intent(ListaProductoActivity.this, LugarInsertarActivity.class);
+                                startActivity(inte4);
+                                break;
+                            case R.id.menu_opcion_2:
+                                Intent inte5 = new Intent(ListaProductoActivity.this, LugarConsultarActivity.class);
+                                startActivity(inte5);
+                                break;
+                            case R.id.menu_opcion_3:
+                                Intent inte6 = new Intent(ListaProductoActivity.this, MapsActivity.class);
+                                startActivity(inte6);
+                                break;
+                            case R.id.menu_opcion_4:
+                                Intent inte7 = new Intent(ListaProductoActivity.this, ListaActivity.class);
+                                startActivity(inte7);
+                                break;
+                        }
+
+                        if(fragmentTransaction) {
+                            getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.content_frame, fragment)
+                                    .commit();
+
+                            menuItem.setChecked(true);
+                            getSupportActionBar().setTitle(menuItem.getTitle());
+                        }
+
+                        drawerLayout.closeDrawers();
+
+                        return true;
+                    }
+                });
+
+
+        //----------------------------------fin menu lateral---------------------------------------
     }
 
 
@@ -164,5 +244,21 @@ public class ListaProductoActivity extends AppCompatActivity {
     }
 
 */
+
+    //-------------------------------parte de menu lateral--------------------------------
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch(item.getItemId()) {
+            case android.R.id.home:
+                drawerLayout.openDrawer(GravityCompat.START);
+                return true;
+            //...
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+//----------------------------------fin parte de menu lateral--------------------------------------------
 
 }
